@@ -4,10 +4,22 @@ namespace PerfectPath.PriorityQueue
     {
         public static void AddChild(Node<T> parent, Node<T> child)
         {
-            parent.Child = child;
-
             child.Parent = parent;
-            child.Left = child.Right = child;
+
+            if (parent.Child == null)
+            {
+                parent.Child = child;
+                child.Left = child.Right = child;
+            }
+            else
+            {
+                child.Left = parent.Child.Right;
+                child.Right = parent.Child.Right.Left;
+
+                parent.Child.Right.Left = child;
+                parent.Child.Right = child;
+            }
+
         }
     }
 }
