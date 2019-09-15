@@ -107,7 +107,7 @@ namespace PerfectPath.Tests
             Assert.AreEqual(p2, p1.Next);
 
             Assert.AreEqual(p1, p2.Prev);
-            Assert.AreEqual(p1, p2.Next);            
+            Assert.AreEqual(p1, p2.Next);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(p3, p1.Prev);
             Assert.AreEqual(p2, p1.Next);
-            
+
             Assert.AreEqual(p1, p2.Prev);
             Assert.AreEqual(p3, p2.Next);
 
@@ -187,7 +187,6 @@ namespace PerfectPath.Tests
             FibonacciHeap<int>.Cut(c2);
 
             Assert.AreEqual(p1, c1.Parent);
-            // Assert.AreEqual(null, c2.Parent);
         }
 
         [Test]
@@ -219,7 +218,6 @@ namespace PerfectPath.Tests
             FibonacciHeap<int>.AddChild(p1, c2);
             FibonacciHeap<int>.Cut(c1);
 
-            // Assert.AreEqual(null, c1.Parent);
             Assert.AreEqual(p1, c2.Parent);
         }
 
@@ -239,7 +237,7 @@ namespace PerfectPath.Tests
 
         private Node<int> CreateNodeConnectedToSelf(int value)
         {
-            var node =  new Node<int>(value);
+            var node = new Node<int>(value);
             node.Prev = node.Next = node;
             return node;
         }

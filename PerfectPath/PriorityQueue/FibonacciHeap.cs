@@ -28,7 +28,7 @@ namespace PerfectPath.PriorityQueue
                 _min = new Node<T>(item);
                 _min.Prev = _min.Next = _min;
             }
-            else 
+            else
             {
                 var newNode = new Node<T>(item);
                 Join(_min, newNode);
@@ -78,8 +78,9 @@ namespace PerfectPath.PriorityQueue
                     node.Parent.Child = node.Next;
                 }
             }
-            
+
             node.Prev = node.Next = node;
+
             return node;
         }
     }
