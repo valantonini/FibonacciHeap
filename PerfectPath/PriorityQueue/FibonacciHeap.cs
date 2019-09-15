@@ -9,12 +9,16 @@ namespace PerfectPath.PriorityQueue
     {
         private Node<T> _min = null;
         private readonly IComparer<T> _comparer;
+
+        public int Count { get; private set; }
+
         public FibonacciHeap() : this(Comparer<T>.Default) { }
 
         public FibonacciHeap(IComparer<T> comparer)
         {
             _comparer = comparer ?? Comparer<T>.Default;
         }
+
 
         public T Peek()
         {
@@ -37,6 +41,8 @@ namespace PerfectPath.PriorityQueue
                     _min = newNode;
                 }
             }
+
+            Count++;
         }
 
         public T PopMin()
@@ -45,7 +51,14 @@ namespace PerfectPath.PriorityQueue
             {
                 throw new HeapEmptyException("Can't pop from empty heap");
             }
-            throw new System.Exception();
+
+            var min = _min;
+
+            _min = _min.Next == _min ? null : _min.Next;
+
+            Count--;
+
+            return Cut(min).Value;
         }
 
         internal static void AddChild(Node<T> parent, Node<T> child)
