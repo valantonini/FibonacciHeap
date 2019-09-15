@@ -110,5 +110,20 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(c2, p1.Child);
         }
+
+        [Test]
+        public void Cut_2NodesWithDirectParent_IncorrectParentForDeferredUpdating()
+        {
+            var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
+            var c1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
+            var c2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
+
+            FibonacciHeap<int>.AddChild(p1, c1);
+            FibonacciHeap<int>.AddChild(p1, c2);
+            FibonacciHeap<int>.Cut(c1);
+
+            // although cut, we will defer parent reassignment
+            Assert.AreEqual(p1, c1.Parent);
+        }
     }
 }

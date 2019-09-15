@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests

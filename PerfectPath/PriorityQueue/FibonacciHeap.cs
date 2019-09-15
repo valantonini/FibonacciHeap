@@ -79,6 +79,8 @@ namespace PerfectPath.PriorityQueue
                 }
             }
 
+            // Defer resetting parent until later
+
             node.Prev = node.Next = node;
 
             return node;
