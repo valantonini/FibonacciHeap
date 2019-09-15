@@ -31,7 +31,7 @@ namespace PerfectPath.PriorityQueue
             else 
             {
                 var newNode = new Node<T>(item);
-                JoinNodes(_min, newNode);
+                Join(_min, newNode);
                 if (_comparer.Compare(item, _min.Value) < 0)
                 {
                     _min = newNode;
@@ -46,21 +46,41 @@ namespace PerfectPath.PriorityQueue
             if (parent.Child == null)
             {
                 parent.Child = child;
-                child.Prev = child.Next = child;
             }
             else
             {
-                JoinNodes(parent.Child, child);
+                Join(parent.Child, child);
             }
         }
 
-        internal static void JoinNodes(Node<T> prev, Node<T> next)
+        internal static void Join(Node<T> prev, Node<T> next)
         {
             var previousOldNext = prev.Next;
             prev.Next = next;
             next.Prev = prev;
             next.Next = previousOldNext;
             previousOldNext.Prev = next;
+        }
+
+        internal static Node<T> Cut(Node<T> node)
+        {
+            node.Next.Prev = node.Prev;
+            node.Prev.Next = node.Next;
+
+            if (node.Parent != null && node.Parent.Child == node)
+            {
+                if (node.Next == node)
+                {
+                    node.Parent.Child = null;
+                }
+                else
+                {
+                    node.Parent.Child = node.Next;
+                }
+            }
+            
+            node.Prev = node.Next = node;
+            return node;
         }
     }
 }
