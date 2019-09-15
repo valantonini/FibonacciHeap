@@ -3,7 +3,7 @@ using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests
 {
-    public class NodeOperationsTests
+    public class FibonacciHeapNodeOperationsTests
     {
         [Test]
         public void AddChild_ShouldSetParent()
