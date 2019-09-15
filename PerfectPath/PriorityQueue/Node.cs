@@ -4,6 +4,8 @@ namespace PerfectPath.PriorityQueue
     {
         public T Value { get; internal set; }
 
+        public int Degree { get; internal set; }
+
         public Node<T> Parent { get; internal set; }
         public Node<T> Child { get; internal set; }
         public Node<T> Prev { get; internal set; }
