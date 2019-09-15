@@ -39,6 +39,15 @@ namespace PerfectPath.PriorityQueue
             }
         }
 
+        public T PopMin()
+        {
+            if (_min == null)
+            {
+                throw new HeapEmptyException("Can't pop from empty heap");
+            }
+            throw new System.Exception();
+        }
+
         internal static void AddChild(Node<T> parent, Node<T> child)
         {
             child.Parent = parent;

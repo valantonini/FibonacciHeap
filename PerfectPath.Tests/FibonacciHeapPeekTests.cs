@@ -3,15 +3,8 @@ using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests
 {
-    public class FibonacciHeapTests
+    public class FibonacciHeapPeekTests
     {
-        [Test]
-        public void New_Instantiate_Success()
-        {
-            var fh = new FibonacciHeap<int>();
-            Assert.NotNull(fh);
-        }
-
         [Test]
         public void Peek_1Node_CorrectValue()
         {
@@ -65,26 +58,6 @@ namespace PerfectPath.Tests
                     fh.Push(value);
                 }
             }
-        }
-
-        private FibonacciHeap<int> ProcessIntArray(int[] sequence)
-        {
-            var fh = new FibonacciHeap<int>();
-
-            foreach (var s in sequence)
-            {
-                if (s < 0)
-                {
-                    // var val = fh.PopMin();
-                    // Assert.AreEqual(System.Math.Abs(s), val);
-                }
-                else
-                {
-                    fh.Push(s);
-                }
-            }
-
-            return fh;
         }
     }
 }
