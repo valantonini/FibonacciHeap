@@ -71,5 +71,51 @@ namespace PerfectPath.Tests
             Assert.AreEqual(0, c1.Degree);
             Assert.AreEqual(0, c2.Degree);
         }
+
+        [Test]
+        public void Degree_3Degree_plus_1Degree_3Degree()
+        {
+            var a1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var a2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var a3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var a4 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var b1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var b2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+
+            FibonacciHeap<int>.AddChild(a1, a2);
+            FibonacciHeap<int>.AddChild(a2, a3);
+            FibonacciHeap<int>.AddChild(a3, a4);
+
+            FibonacciHeap<int>.AddChild(b1, b2);
+
+            Assert.AreEqual(3, a1.Degree);
+
+            FibonacciHeap<int>.AddChild(a1, b1);
+
+            Assert.AreEqual(3, a1.Degree);
+        }
+
+        [Test]
+        public void Degree_3Degree_plus_1Degree_lower_in_tree_3Degree()
+        {
+            var a1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var a2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
+            var a3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+            var a4 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(4);
+            var b1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
+            var b2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
+
+            FibonacciHeap<int>.AddChild(a1, a2);
+            FibonacciHeap<int>.AddChild(a2, a3);
+            FibonacciHeap<int>.AddChild(a3, a4);
+
+            FibonacciHeap<int>.AddChild(b1, b2);
+
+            Assert.AreEqual(3, a1.Degree);
+
+            FibonacciHeap<int>.AddChild(a2, b1);
+
+            Assert.AreEqual(3, a1.Degree);
+        }
     }
 }

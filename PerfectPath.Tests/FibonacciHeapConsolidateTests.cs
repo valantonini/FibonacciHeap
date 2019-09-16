@@ -9,7 +9,7 @@ namespace PerfectPath.Tests
         public void Consolidate_1Node_CorrectSiblings()
         {
             var node = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
-            
+
             FibonacciHeap<int>.Consolidate(node);
 
             Assert.AreEqual(node, node.Prev);
@@ -21,7 +21,7 @@ namespace PerfectPath.Tests
         {
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
-            
+
             FibonacciHeap<int>.Join(node1, node2);
             FibonacciHeap<int>.Consolidate(node1);
 
@@ -30,6 +30,8 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(node2, node2.Prev);
             Assert.AreEqual(node2, node2.Next);
+
+            Assert.AreEqual(node1, node2.Parent);
         }
     }
 }

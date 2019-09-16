@@ -19,7 +19,6 @@ namespace PerfectPath.PriorityQueue
             _comparer = comparer ?? Comparer<T>.Default;
         }
 
-
         public T Peek()
         {
             return _min.Value;
@@ -70,7 +69,7 @@ namespace PerfectPath.PriorityQueue
                 parent.Child = child;
 
                 var p = parent;
-                while(p != null)
+                while (p != null)
                 {
                     p.Degree = p.Child.Degree + 1;
                     p = p.Parent;
@@ -79,14 +78,21 @@ namespace PerfectPath.PriorityQueue
             else
             {
                 Join(parent.Child, child);
+
                 var p = parent;
                 var c = child;
-                while(p != null)
+                while (p != null)
                 {
-                    // bug here, don't let it overwrite if bigger
-                    p.Degree = c.Degree + 1;
-                    p = p.Parent;
-                    c = p;
+                    if (p.Degree >= c.Degree + 1)
+                    {
+                        break; // bigger sibling already exists 
+                    }
+                    else
+                    {
+                        p.Degree = c.Degree + 1;
+                        p = p.Parent;
+                        c = p;
+                    }
                 }
             }
         }
@@ -117,16 +123,18 @@ namespace PerfectPath.PriorityQueue
                 }
             }
 
-            // Defer resetting parent until later
+            // Defer resetting parent until later, this is dangerous as root nodes have now invalid parents
 
             node.Prev = node.Next = node;
 
             return node;
         }
 
-        internal static void Consolidate(Node<T> root)
+        internal static void Consolidate(Node<T> root, IComparer<T> comparer = null)
         {
-            // ToDo
+            comparer = comparer ?? Comparer<T>.Default;
+
+
         }
     }
 }
