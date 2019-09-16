@@ -122,7 +122,7 @@ namespace PerfectPath.Tests
             FibonacciHeap<int>.AddChild(p1, c2);
             FibonacciHeap<int>.Cut(c1);
 
-            // although cut, we will defer parent reassignment
+            // although cut, we will defer parent reassignment until collapse
             Assert.AreEqual(p1, c1.Parent);
         }
     }

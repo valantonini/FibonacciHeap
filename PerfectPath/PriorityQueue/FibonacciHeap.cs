@@ -68,10 +68,26 @@ namespace PerfectPath.PriorityQueue
             if (parent.Child == null)
             {
                 parent.Child = child;
+
+                var p = parent;
+                while(p != null)
+                {
+                    p.Degree = p.Child.Degree + 1;
+                    p = p.Parent;
+                }
             }
             else
             {
                 Join(parent.Child, child);
+                var p = parent;
+                var c = child;
+                while(p != null)
+                {
+                    // bug here, don't let it overwrite if bigger
+                    p.Degree = c.Degree + 1;
+                    p = p.Parent;
+                    c = p;
+                }
             }
         }
 
@@ -106,6 +122,11 @@ namespace PerfectPath.PriorityQueue
             node.Prev = node.Next = node;
 
             return node;
+        }
+
+        internal static void Consolidate(Node<T> root)
+        {
+            // ToDo
         }
     }
 }
