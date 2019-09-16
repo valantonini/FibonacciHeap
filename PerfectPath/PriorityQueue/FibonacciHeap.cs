@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -7,6 +7,8 @@ namespace PerfectPath.PriorityQueue
 {
     public class FibonacciHeap<T> : IPriorityQueue<T>
     {
+        public static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
+
         private Node<T> _min = null;
         private readonly IComparer<T> _comparer;
 
@@ -130,11 +132,10 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal static void Consolidate(Node<T> root, IComparer<T> comparer = null)
+        internal static void Consolidate(Node<T> root, int nodeCount)
         {
-            comparer = comparer ?? Comparer<T>.Default;
-
-
+            var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1;
+            var array = new Node<T>[arraySize];
         }
     }
 }
