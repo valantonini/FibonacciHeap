@@ -53,13 +53,27 @@ namespace PerfectPath.PriorityQueue
                 throw new HeapEmptyException("Can't pop from empty heap");
             }
 
-            var min = _min;
+            var minSibling = _min.Next;
+            var min = Cut(_min);
 
-            _min = _min.Next == _min ? null : _min.Next;
+            if (min.Child != null)
+            {
+                if (minSibling == min)
+                {
+                    minSibling = min.Child;
+                }
+                else
+                {
+                    Join(minSibling, min.Child);
+                }
+            }
+
+            _min = min == minSibling ? null : Consolidate(minSibling, Count, _comparer);
 
             Count--;
 
-            return Cut(min).Value;
+            return min.Value;
+
         }
 
         internal static void AddChild(Node<T> parent, Node<T> child)
@@ -175,7 +189,7 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal static Node<T> Consolidate(Node<T> root, int nodeCount, Comparer<T> comparer = null)
+        internal static Node<T> Consolidate(Node<T> root, int nodeCount, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
 
@@ -208,8 +222,15 @@ namespace PerfectPath.PriorityQueue
                 }
 
                 array[mergeSource.Degree] = mergeSource;
+
                 current = current == next ? null : next;
                 next = next.Next;
+
+                if (current != null)
+                {
+                    Cut(current);
+                }
+
             }
 
 

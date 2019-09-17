@@ -16,5 +16,10 @@ namespace PerfectPath.PriorityQueue
         {
             Value = value;
         }
+
+#if (DEBUG)
+        public bool SingleNode => Next == this && Prev == this;
+#endif
+
     }
 }

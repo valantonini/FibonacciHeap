@@ -41,7 +41,8 @@ namespace PerfectPath.Tests
 
             Assert.Throws<HeapEmptyException>(() => fh.PopMin());
         }
-        // [Test]
+
+        [Test]
         public void PopMin_3Nodes_CorrectNode()
         {
             var fh = new FibonacciHeap<int>();
@@ -57,6 +58,29 @@ namespace PerfectPath.Tests
             Assert.AreEqual(5, first);
             Assert.AreEqual(6, second);
             Assert.AreEqual(7, third);
+
+            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+        }
+
+        [TestCase(new int[] { 1, -1 })]
+        [TestCase(new int[] { 1, 2, -1, -2 })]
+        [TestCase(new int[] { 3, 1, 2, -1, 4, -2, -3, 8, 5, 6, -4, -5, 7, -6, -7, -8 })]
+        public void ProcessIntArray(int[] sequence)
+        {
+            var fh = new FibonacciHeap<int>();
+
+            foreach (var s in sequence)
+            {
+                if (s < 0)
+                {
+                    var val = fh.PopMin();
+                    Assert.AreEqual(System.Math.Abs(s), val);
+                }
+                else
+                {
+                    fh.Push(s);
+                }
+            }
 
             Assert.Throws<HeapEmptyException>(() => fh.PopMin());
         }

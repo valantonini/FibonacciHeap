@@ -1,5 +1,7 @@
+#define DEBUG
 using NUnit.Framework;
 using PerfectPath.PriorityQueue;
+using System.Linq;
 
 namespace PerfectPath.Tests
 {
@@ -85,6 +87,41 @@ namespace PerfectPath.Tests
             var newMin = FibonacciHeap<int>.Consolidate(node3, 2);
 
             Assert.AreEqual(3, newMin.Value);
+        }
+        [Test]
+        public void Consolidate_LotsOfNodes_CorrectWidth()
+        {
+            var tree1 = CreateTree(new int[] { 1 });
+            var tree2 = CreateTree(new int[] { 2 });
+            var tree3 = CreateTree(new int[] { 3, 4 });
+
+            FibonacciHeap<int>.Join(tree1, tree2);
+            FibonacciHeap<int>.Join(tree1, tree3);
+
+            var consolidated = FibonacciHeap<int>.Consolidate(tree1, 3);
+
+            var enumeratedSiblings = FibonacciHeap<int>.IterateSiblings(consolidated);
+
+            Assert.AreEqual(1, enumeratedSiblings.Count());
+        }
+
+        private Node<int> CreateTree(int[] tree)
+        {
+            Node<int> node = null;
+            foreach (var level in tree)
+            {
+                var newNode = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(level);
+                if (node == null)
+                {
+                    node = newNode;
+                }
+                else
+                {
+                    FibonacciHeap<int>.AddChild(node, newNode);
+                }
+            }
+            return node;
+
         }
     }
 }
