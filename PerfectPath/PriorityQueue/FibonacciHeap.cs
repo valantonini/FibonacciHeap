@@ -71,9 +71,11 @@ namespace PerfectPath.PriorityQueue
                 parent.Child = child;
 
                 var p = parent;
+                var c = child;
                 while (p != null)
                 {
-                    p.Degree = p.Child.Degree + 1;
+                    p.Degree = c.Degree + 1;
+                    c = p;
                     p = p.Parent;
                 }
             }
@@ -124,6 +126,34 @@ namespace PerfectPath.PriorityQueue
 
         internal static Node<T> Cut(Node<T> node)
         {
+            var parent = node.Parent;
+            var child = node;
+            while (parent != null)
+            {
+                if (parent.Degree == child.Degree + 1)
+                {
+                    var biggestDegree = 0;
+                    foreach (var sibling in IterateSiblings(child))
+                    {
+                        if (sibling == node)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            biggestDegree = sibling.Degree + 1 > biggestDegree ? sibling.Degree + 1 : biggestDegree;
+                        }
+                    }
+                    parent.Degree = biggestDegree;
+                }
+                else
+                {
+                    break;
+                }
+                child = parent;
+                parent = parent.Parent;
+            }
+
             node.Next.Prev = node.Prev;
             node.Prev.Next = node.Next;
 
