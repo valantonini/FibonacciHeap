@@ -57,5 +57,33 @@ namespace PerfectPath.Tests
             Assert.IsNull(node1.Parent);
             Assert.AreEqual(node1, node2.Parent);
         }
+
+        [Test]
+        public void Consolidate_2Node_CorrectMinReturned()
+        {
+            var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+            var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
+
+            FibonacciHeap<int>.Join(node1, node2);
+            var newMin = FibonacciHeap<int>.Consolidate(node1, 2);
+
+            Assert.AreEqual(5, newMin.Value);
+        }
+        [Test]
+        public void Consolidate_3Node_CorrectMin()
+        {
+            var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
+            var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(4);
+
+            FibonacciHeap<int>.AddChild(node1, node2);
+
+            var node3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+
+            FibonacciHeap<int>.Join(node3, node1);
+
+            var newMin = FibonacciHeap<int>.Consolidate(node3, 2);
+
+            Assert.AreEqual(3, newMin.Value);
+        }
     }
 }

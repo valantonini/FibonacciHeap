@@ -171,6 +171,7 @@ namespace PerfectPath.PriorityQueue
 
 
             Node<T> newRoot = null;
+            Node<T> newMin = null;
             foreach (var node in array)
             {
                 if (node == null)
@@ -182,15 +183,20 @@ namespace PerfectPath.PriorityQueue
                     if (newRoot == null)
                     {
                         newRoot = node;
+                        newMin = node;
                     }
                     else
                     {
+                        if (comparer.Compare(node.Value, newMin.Value) < 0)
+                        {
+                            newMin = node;
+                        }
                         Join(newRoot, node);
                     }
                 }
             }
 
-            return newRoot;
+            return newMin;
         }
     }
 }
