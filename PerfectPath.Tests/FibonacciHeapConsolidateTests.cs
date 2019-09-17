@@ -69,6 +69,7 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(5, newMin.Value);
         }
+
         [Test]
         public void Consolidate_3Node_CorrectMin()
         {
