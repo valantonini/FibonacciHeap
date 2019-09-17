@@ -132,10 +132,65 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal static void Consolidate(Node<T> root, int nodeCount)
+        internal static Node<T> Consolidate(Node<T> root, int nodeCount, Comparer<T> comparer = null)
         {
+            comparer = comparer ?? Comparer<T>.Default;
+
             var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1;
             var array = new Node<T>[arraySize];
+
+            var next = root.Next;
+            var current = Cut(root);
+            while (current != null)
+            {
+                var mergeSource = current;
+                var index = current.Degree;
+                var mergeTarget = array[index];
+
+                while (mergeTarget != null)
+                {
+                    if (comparer.Compare(mergeSource.Value, mergeTarget.Value) < 0)
+                    {
+                        AddChild(mergeSource, mergeTarget);
+                    }
+                    else
+                    {
+                        AddChild(mergeTarget, mergeSource);
+                        mergeSource = mergeTarget;
+                    }
+
+                    array[index] = null;
+                    index = mergeSource.Degree;
+                    mergeTarget = array[index];
+                }
+
+                array[mergeSource.Degree] = mergeSource;
+                current = current == next ? null : next;
+                next = next.Next;
+            }
+
+
+            Node<T> newRoot = null;
+            foreach (var node in array)
+            {
+                if (node == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    if (newRoot == null)
+                    {
+                        newRoot = node;
+                    }
+                    else
+                    {
+                        Join(newRoot, node);
+                    }
+                }
+            }
+
+            return newRoot;
         }
     }
 }

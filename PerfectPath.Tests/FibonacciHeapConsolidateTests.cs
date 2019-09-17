@@ -16,7 +16,7 @@ namespace PerfectPath.Tests
             Assert.AreEqual(node, node.Next);
         }
 
-        //[Test]
+        [Test]
         public void Consolidate_2Node_CorrectSiblings()
         {
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
@@ -30,6 +30,32 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(node2, node2.Prev);
             Assert.AreEqual(node2, node2.Next);
+        }
+
+        [Test]
+        public void Consolidate_2Node_CorrectDegree()
+        {
+            var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+            var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
+
+            FibonacciHeap<int>.Join(node1, node2);
+            FibonacciHeap<int>.Consolidate(node1, 2);
+
+            Assert.AreEqual(1, node1.Degree);
+            Assert.AreEqual(0, node2.Degree);
+        }
+
+        [Test]
+        public void Consolidate_2Node_CorrectParents()
+        {
+            var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+            var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
+
+            FibonacciHeap<int>.Join(node1, node2);
+            FibonacciHeap<int>.Consolidate(node1, 2);
+
+            Assert.IsNull(node1.Parent);
+            Assert.AreEqual(node1, node2.Parent);
         }
     }
 }
