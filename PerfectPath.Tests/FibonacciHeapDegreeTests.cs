@@ -117,5 +117,39 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(3, a1.Degree);
         }
+
+        //[Test]
+        public void Degree_RemoveLargeSubTree_DegreeRecalculated()
+        {
+            var a1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(7);
+            var a2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
+
+            FibonacciHeap<int>.AddChild(a1, a2);
+
+            var b1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
+            var b2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
+            var b3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
+            var b4 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(4);
+
+
+            FibonacciHeap<int>.AddChild(b1, b2);
+            FibonacciHeap<int>.AddChild(b2, b3);
+            FibonacciHeap<int>.AddChild(b3, b4);
+
+            var c1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
+            var c2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
+
+            FibonacciHeap<int>.AddChild(c1, c2);
+
+
+            FibonacciHeap<int>.AddChild(a1, b1);
+            FibonacciHeap<int>.AddChild(a1, c1);
+
+            Assert.AreEqual(4, a1.Degree);
+
+            FibonacciHeap<int>.Cut(b1);
+
+            Assert.AreEqual(2, a1.Degree);
+        }
     }
 }

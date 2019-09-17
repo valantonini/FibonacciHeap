@@ -99,6 +99,20 @@ namespace PerfectPath.PriorityQueue
             }
         }
 
+        internal static IEnumerable<Node<T>> IterateSiblings(Node<T> node)
+        {
+            var start = node;
+            var next = node;
+            do
+            {
+                yield return next;
+                next = next.Next;
+            }
+            while (next != start);
+
+            yield break;
+        }
+
         internal static void Join(Node<T> prev, Node<T> next)
         {
             var previousOldNext = prev.Next;
@@ -126,7 +140,6 @@ namespace PerfectPath.PriorityQueue
             }
 
             // Defer resetting parent until later, this is dangerous as root nodes have now invalid parents
-
             node.Prev = node.Next = node;
 
             return node;
