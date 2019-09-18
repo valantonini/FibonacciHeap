@@ -5,6 +5,9 @@ namespace PerfectPath.Tests
 {
     public static class FibonacciHeapTestHelpers
     {
+        // TODO: create helper method to create nunit testcase
+        // var str = $"new int[]{{{string.Join(", ", numbers)},{string.Join(", ", numbers.OrderBy(n => n).Select(n => n * -1))}}}";
+
         public static Node<int> CreateNodeConnectedToSelf(int value)
         {
             var node = new Node<int>(value);

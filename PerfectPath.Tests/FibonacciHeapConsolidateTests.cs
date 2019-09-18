@@ -100,9 +100,26 @@ namespace PerfectPath.Tests
 
             var consolidated = FibonacciHeap<int>.Consolidate(tree1, 3);
 
-            var enumeratedSiblings = FibonacciHeap<int>.IterateSiblings(consolidated);
+            var enumeratedSiblings = NodeDebugTools<int>.IterateSiblings(consolidated);
 
             Assert.AreEqual(1, enumeratedSiblings.Count());
+        }
+
+        // this sequence of numbers was thought to be misbehaving...
+        [TestCase(new int[] { 984556, 907815, 743545, 811641, 738779, 48315, 17001, 149360 })]
+        [TestCase(new int[] { 7, 6, 5, 8, 4, 2, 1, 3 })]
+        public void Consolidate_LargeNumberOfSiblings(int[] sequence)
+        {
+            var siblings = CreateSiblings(sequence);
+            var count = NodeDebugTools<int>.IterateSiblings(siblings).Count();
+
+            Assert.AreEqual(sequence.Length, count);
+
+            var consolidated = FibonacciHeap<int>.Consolidate(siblings, count);
+
+            var consolidatedCount = NodeDebugTools<int>.IterateSiblings(consolidated).Count();
+
+            Assert.AreEqual(1, consolidatedCount);
         }
 
         private Node<int> CreateTree(int[] tree)
@@ -122,6 +139,24 @@ namespace PerfectPath.Tests
             }
             return node;
 
+        }
+
+        private Node<int> CreateSiblings(int[] tree)
+        {
+            Node<int> node = null;
+            foreach (var level in tree)
+            {
+                var newNode = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(level);
+                if (node == null)
+                {
+                    node = newNode;
+                }
+                else
+                {
+                    FibonacciHeap<int>.Join(node, newNode);
+                }
+            }
+            return node;
         }
     }
 }

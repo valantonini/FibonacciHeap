@@ -58,23 +58,36 @@ namespace PerfectPath.PriorityQueue
                 throw new HeapEmptyException("Can't pop from empty heap");
             }
 
+            // want to iterate through root nodes. Get a reference to min's next as we are about
+            // to cut it from it's siblings
             var minSibling = _min.Next;
             var min = Cut(_min);
 
+            // children need to be promoted to root before we remove it
             if (min.Child != null)
             {
                 if (minSibling == min)
                 {
+                    // if min was the only root node, it's children are now the root
                     minSibling = min.Child;
                 }
                 else
                 {
+                    // join children to soon to be new root
                     Join(minSibling, min.Child);
                 }
+
+                // sever child, children will sever ties to parent in consolidate
+                min.Child = null;
             }
 
-            _min = min == minSibling ? null : Consolidate(minSibling, Count, _comparer);
+            _min = min == minSibling // there are no other nodes
+                        ? null // heap empty 
+                        : Consolidate(minSibling, Count, _comparer); // clean up the heap
 
+#if (DEBUG)
+            System.Console.WriteLine(NodeDebugTools<T>.Stringify(_min));
+#endif
             Count--;
 
             return min.Value;
@@ -85,64 +98,50 @@ namespace PerfectPath.PriorityQueue
         {
             child.Parent = parent;
 
+            // first child of parent
             if (parent.Child == null)
             {
                 parent.Child = child;
-
-                var p = parent;
-                var c = child;
-                while (p != null)
-                {
-                    p.Degree = c.Degree + 1;
-                    c = p;
-                    p = p.Parent;
-                }
             }
             else
             {
                 Join(parent.Child, child);
+            }
 
-                var p = parent;
-                var c = child;
-                while (p != null)
+            // go up parents updating their degree unless they are bigger due to siblings having higher degree
+            var p = parent;
+            var c = child;
+            while (p != null)
+            {
+                if (p.Degree >= c.Degree + 1)
                 {
-                    if (p.Degree >= c.Degree + 1)
-                    {
-                        break; // bigger sibling already exists 
-                    }
-                    else
-                    {
-                        p.Degree = c.Degree + 1;
-                        p = p.Parent;
-                        c = p;
-                    }
+                    break; // bigger sibling already exists 
+                }
+                else
+                {
+                    p.Degree = c.Degree + 1;
+                    p = p.Parent;
+                    c = p;
                 }
             }
-        }
-
-        internal static IEnumerable<Node<T>> IterateSiblings(Node<T> node)
-        {
-            var start = node;
-            var next = node;
-            do
-            {
-                yield return next;
-                next = next.Next;
-            }
-            while (next != start);
-
-            yield break;
         }
 
         internal static void Join(Node<T> prev, Node<T> next)
         {
             var previousOldNext = prev.Next;
+
             prev.Next = next;
+
             next.Prev = prev;
             next.Next = previousOldNext;
+
             previousOldNext.Prev = next;
         }
 
+        /// <summary>
+        /// Sever the siblings and reassign sibling to parent's child if this was the connection
+        /// to the parent.
+        /// <summary>
         internal static Node<T> Cut(Node<T> node)
         {
             var parent = node.Parent;
@@ -152,17 +151,23 @@ namespace PerfectPath.PriorityQueue
                 if (parent.Degree == child.Degree + 1)
                 {
                     var biggestDegree = 0;
-                    foreach (var sibling in IterateSiblings(child))
+
+                    var start = child;
+                    var next = child.Next;
+                    do
                     {
-                        if (sibling == node)
+                        if (next == node)
                         {
                             continue;
                         }
                         else
                         {
-                            biggestDegree = sibling.Degree + 1 > biggestDegree ? sibling.Degree + 1 : biggestDegree;
+                            biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
                         }
+                        next = next.Next;
                     }
+                    while (next != start);
+
                     parent.Degree = biggestDegree;
                 }
                 else
@@ -188,8 +193,11 @@ namespace PerfectPath.PriorityQueue
                 }
             }
 
-            // Defer resetting parent until later, this is dangerous as root nodes have now invalid parents
+            // connect node to itself
             node.Prev = node.Next = node;
+
+            // sever parent
+            node.Parent = null;
 
             return node;
         }
