@@ -1,8 +1,8 @@
-using NUnit.Framework;
-using PerfectPath.PriorityQueue;
 using System;
 using System.Linq;
+using NUnit.Framework;
 using System.Diagnostics;
+using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests
 {

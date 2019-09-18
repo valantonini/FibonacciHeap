@@ -1,7 +1,6 @@
-using System.Linq;
 namespace PerfectPath.PriorityQueue
 {
-    public class Node<T>
+    public partial class Node<T>
     {
         public T Value { get; internal set; }
 
@@ -17,14 +16,5 @@ namespace PerfectPath.PriorityQueue
         {
             Value = value;
         }
-
-#if (DEBUG)
-        public bool SingleNode => Next == this && Prev == this;
-        public int SiblingCount => NodeDebugTools<T>.IterateSiblings(this).Count();
-        public int parentCount => this.Parent == null ? 0 : NodeDebugTools<T>.IterateUpParents(this.Parent, this).Count();
-
-        public override string ToString() => NodeDebugTools<T>.Stringify(this);
-#endif
-
     }
 }
