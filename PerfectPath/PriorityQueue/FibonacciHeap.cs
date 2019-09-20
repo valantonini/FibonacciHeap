@@ -37,6 +37,7 @@ namespace PerfectPath.PriorityQueue
             else
             {
                 var newNode = new Node<T>(item);
+                newNode.Prev = newNode.Next = newNode;
 
                 // join node to current min
                 Join(_min, newNode);
@@ -86,7 +87,7 @@ namespace PerfectPath.PriorityQueue
                         : Consolidate(minSibling, Count, _comparer); // clean up the heap
 
 #if (DEBUG)
-            System.Console.WriteLine(NodeDebugTools<T>.Stringify(_min));
+            //System.Console.WriteLine(NodeDebugTools<T>.Stringify(_min));
 #endif
             Count--;
 
@@ -128,14 +129,11 @@ namespace PerfectPath.PriorityQueue
 
         internal static void Join(Node<T> prev, Node<T> next)
         {
-            var previousOldNext = prev.Next;
-
-            prev.Next = next;
-
-            next.Prev = prev;
-            next.Next = previousOldNext;
-
-            previousOldNext.Prev = next;
+            var tmp = next.Prev;
+            prev.Prev.Next = next;
+            next.Prev = prev.Prev;
+            tmp.Next = prev;
+            prev.Prev = tmp;
         }
 
         /// <summary>

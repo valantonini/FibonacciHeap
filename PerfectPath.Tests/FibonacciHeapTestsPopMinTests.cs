@@ -97,10 +97,10 @@ namespace PerfectPath.Tests
             Assert.Throws<HeapEmptyException>(() => fh.PopMin());
         }
 
-        [TestCase(new int[] { 1, -1 }, Ignore = "Debug consolidate issue")]
-        [TestCase(new int[] { 1, 2, -1, -2 }, Ignore = "Debug consolidate issue")]
-        [TestCase(new int[] { 3, 1, 2, -1, 4, -2, -3, 8, 5, 6, -4, -5, 7, -6, -7, -8 }, Ignore = "Debug consolidate issue")]
-        [TestCase(new int[] { 984556, 907815, 743545, 811641, 738779, 48315, 17001, 149360, -17001, -48315, -149360, -738779, -743545, -811641, -907815, -984556 }, Ignore = "Debug consolidate issue")]
+        [TestCase(new int[] { 1, -1 })]
+        [TestCase(new int[] { 1, 2, -1, -2 })]
+        [TestCase(new int[] { 3, 1, 2, -1, 4, -2, -3, 8, 5, 6, -4, -5, 7, -6, -7, -8 })]
+        [TestCase(new int[] { 984556, 907815, 743545, 811641, 738779, 48315, 17001, 149360, -17001, -48315, -149360, -738779, -743545, -811641, -907815, -984556 })]
         [TestCase(new int[] { 7, 6, 5, 8, 4, 2, 1, 3, -1, -2, -3, -4, -5, -6, -7, -8 })]
         public void ProcessIntArray(int[] sequence)
         {
@@ -119,7 +119,7 @@ namespace PerfectPath.Tests
                 }
             }
 
-            //Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
         }
     }
 }

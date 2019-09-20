@@ -13,8 +13,8 @@ namespace PerfectPath.Tests
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
             var p3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
-            FibonacciHeap<int>.Join(p1, p2);
             FibonacciHeap<int>.Join(p2, p3);
+            FibonacciHeap<int>.Join(p1, p2);
 
             var actual = NodeDebugTools<int>.IterateSiblings(p1).ToList();
 

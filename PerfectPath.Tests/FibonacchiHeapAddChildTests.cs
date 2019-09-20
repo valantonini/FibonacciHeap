@@ -59,26 +59,26 @@ namespace PerfectPath.Tests
         [Test]
         public void AddChild_3Nodes_CorrectNextPrev()
         {
-            var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
-            var c1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
-            var c2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
-            var c3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(4);
+            var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(0);
+            var c1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
+            var c2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
+            var c3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
             FibonacciHeap<int>.AddChild(p1, c1);
             FibonacciHeap<int>.AddChild(p1, c2);
             FibonacciHeap<int>.AddChild(p1, c3);
 
             // Parent
-            // c1 > c3 > c2 
+            // c1 > c2 > c3 
 
-            Assert.AreEqual(c2, c1.Prev);
-            Assert.AreEqual(c3, c1.Next);
+            Assert.AreEqual(c3, c1.Prev);
+            Assert.AreEqual(c2, c1.Next);
 
-            Assert.AreEqual(c3, c2.Prev);
-            Assert.AreEqual(c1, c2.Next);
+            Assert.AreEqual(c1, c2.Prev);
+            Assert.AreEqual(c3, c2.Next);
 
-            Assert.AreEqual(c1, c3.Prev);
-            Assert.AreEqual(c2, c3.Next);
+            Assert.AreEqual(c2, c3.Prev);
+            Assert.AreEqual(c1, c3.Next);
         }
 
         [Test]
