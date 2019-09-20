@@ -13,7 +13,7 @@ namespace PerfectPath.Tests
         {
             var stringBuilder = new System.Text.StringBuilder();
             stringBuilder.AppendLine();
-            var mod = 2;
+            var mod = 4;
             var random = new Random(123);
 
             var numbers = Enumerable

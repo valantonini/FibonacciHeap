@@ -127,17 +127,20 @@ namespace PerfectPath.PriorityQueue
             }
         }
 
-        internal static void Join(Node<T> prev, Node<T> next)
+        /// <summary>
+        /// Joins 2 nodes. Those nodes can have siblings / links to adjacent
+        internal static void Join(Node<T> first, Node<T> second)
         {
-            var tmp = next.Prev;
-            prev.Prev.Next = next;
-            next.Prev = prev.Prev;
-            tmp.Next = prev;
-            prev.Prev = tmp;
+            var lastNodeInSecond = second.Prev; // last node in second
+
+            first.Prev.Next = second; // last node in first
+            second.Prev = first.Prev; // join first node in second to last node in first
+            lastNodeInSecond.Next = first; // join lasnode in second to first node in first
+            first.Prev = lastNodeInSecond; //join first node in first to last node in second
         }
 
         /// <summary>
-        /// Sever the siblings and reassign sibling to parent's child if this was the connection
+        /// Sever the adjacent and reassign child to parent's child if this was the connection
         /// to the parent.
         /// <summary>
         internal static Node<T> Cut(Node<T> node)
@@ -146,48 +149,56 @@ namespace PerfectPath.PriorityQueue
             var child = node;
             while (parent != null)
             {
+                // go up the chain updating parent's degrees
                 if (parent.Degree == child.Degree + 1)
                 {
                     var biggestDegree = 0;
 
+                    // iterate through adjacent nodes to find the biggest to recalc parent degree
                     var start = child;
                     var next = child.Next;
                     do
                     {
                         if (next == node)
                         {
-                            continue;
+                            continue; // skip current node as it is the biggest and will be removed
                         }
                         else
                         {
                             biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
                         }
+
                         next = next.Next;
                     }
                     while (next != start);
-
+                    // update parent's degree
                     parent.Degree = biggestDegree;
                 }
                 else
                 {
                     break;
                 }
+
                 child = parent;
                 parent = parent.Parent;
             }
 
-            node.Next.Prev = node.Prev;
-            node.Prev.Next = node.Next;
 
+            // remove node from adjacent by:
+
+            node.Next.Prev = node.Prev; // joining node on left of this node to node on right
+            node.Prev.Next = node.Next; // joining node on right of this one to node on left
+
+            // update parent's child if the parents child is the node about to be removed
             if (node.Parent != null && node.Parent.Child == node)
             {
                 if (node.Next == node)
                 {
-                    node.Parent.Child = null;
+                    node.Parent.Child = null; // no adjacent / siblings to replace with
                 }
                 else
                 {
-                    node.Parent.Child = node.Next;
+                    node.Parent.Child = node.Next; // parent's child is node on right
                 }
             }
 
