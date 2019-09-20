@@ -215,7 +215,7 @@ namespace PerfectPath.PriorityQueue
         {
             comparer = comparer ?? Comparer<T>.Default;
 
-            var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1;
+            var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1; // magic to ensure array won't be too small (index will be tree degree)
             var array = new Node<T>[arraySize];
 
             var next = root.Next;
@@ -255,7 +255,7 @@ namespace PerfectPath.PriorityQueue
 
             }
 
-
+            // join togethor merged trees into 1 linked list again
             Node<T> newRoot = null;
             Node<T> newMin = null;
             foreach (var node in array)
