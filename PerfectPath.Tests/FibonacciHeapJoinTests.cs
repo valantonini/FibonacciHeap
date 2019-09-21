@@ -5,13 +5,21 @@ namespace PerfectPath.Tests
 {
     public class FibonacciHeapJoinTests
     {
+        private FibonacciHeap<int> _heap;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _heap = new FibonacciHeap<int>();
+        }
+
         [Test]
         public void JoinNodes_2Nodes_CorrectNextAndPrev()
         {
             var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
 
-            FibonacciHeap<int>.Join(p1, p2);
+            _heap.Join(p1, p2);
 
             Assert.AreEqual(p2, p1.Prev);
             Assert.AreEqual(p2, p1.Next);
@@ -27,8 +35,8 @@ namespace PerfectPath.Tests
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
             var p3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
-            FibonacciHeap<int>.Join(p2, p3);
-            FibonacciHeap<int>.Join(p1, p2);
+            _heap.Join(p2, p3);
+            _heap.Join(p1, p2);
 
             Assert.AreEqual(p3, p1.Prev);
             Assert.AreEqual(p2, p1.Next);

@@ -5,13 +5,21 @@ namespace PerfectPath.Tests
 {
     public class FibonacchiHeapAddChildTests
     {
+        private FibonacciHeap<int> _heap;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _heap = new FibonacciHeap<int>();
+        }
+
         [Test]
         public void AddChild_1Node_CorrectParent()
         {
             var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
 
-            FibonacciHeap<int>.AddChild(p1, p2);
+            _heap.AddChild(p1, p2);
 
             Assert.AreEqual(p1, p2.Parent);
         }
@@ -22,7 +30,7 @@ namespace PerfectPath.Tests
             var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
 
-            FibonacciHeap<int>.AddChild(p1, p2);
+            _heap.AddChild(p1, p2);
 
             Assert.AreEqual(p2, p1.Child);
         }
@@ -33,7 +41,7 @@ namespace PerfectPath.Tests
             var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
 
-            FibonacciHeap<int>.AddChild(p1, p2);
+            _heap.AddChild(p1, p2);
 
             Assert.AreEqual(p2, p2.Prev);
             Assert.AreEqual(p2, p2.Next);
@@ -46,8 +54,8 @@ namespace PerfectPath.Tests
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
             var p3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
-            FibonacciHeap<int>.AddChild(p1, p2);
-            FibonacciHeap<int>.AddChild(p1, p3);
+            _heap.AddChild(p1, p2);
+            _heap.AddChild(p1, p3);
 
             Assert.AreEqual(p2, p3.Prev);
             Assert.AreEqual(p2, p3.Next);
@@ -64,9 +72,9 @@ namespace PerfectPath.Tests
             var c2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
             var c3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
-            FibonacciHeap<int>.AddChild(p1, c1);
-            FibonacciHeap<int>.AddChild(p1, c2);
-            FibonacciHeap<int>.AddChild(p1, c3);
+            _heap.AddChild(p1, c1);
+            _heap.AddChild(p1, c2);
+            _heap.AddChild(p1, c3);
 
             // Parent
             // c1 > c2 > c3 
@@ -88,8 +96,8 @@ namespace PerfectPath.Tests
             var p2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(2);
             var p3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
 
-            FibonacciHeap<int>.AddChild(p1, p2);
-            FibonacciHeap<int>.AddChild(p1, p3);
+            _heap.AddChild(p1, p2);
+            _heap.AddChild(p1, p3);
 
             Assert.AreEqual(p1, p2.Parent);
             Assert.AreEqual(p1, p3.Parent);

@@ -97,7 +97,7 @@ namespace PerfectPath.PriorityQueue
 
         }
 
-        internal static void AddChild(Node<T> parent, Node<T> child)
+        internal void AddChild(Node<T> parent, Node<T> child)
         {
             child.Parent = parent;
 
@@ -117,7 +117,7 @@ namespace PerfectPath.PriorityQueue
 
         /// <summary>
         /// Joins 2 nodes. Those nodes can have siblings / links to adjacent
-        internal static void Join(Node<T> first, Node<T> second)
+        internal void Join(Node<T> first, Node<T> second)
         {
             var lastNodeInSecond = second.Prev; // last node in second
 
@@ -131,7 +131,7 @@ namespace PerfectPath.PriorityQueue
         /// Sever the adjacent and reassign child to parent's child if this was the connection
         /// to the parent.
         /// <summary>
-        internal static Node<T> Cut(Node<T> node)
+        internal Node<T> Cut(Node<T> node)
         {
             DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(node);
 
@@ -163,7 +163,7 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal static Node<T> Consolidate(Node<T> root, int nodeCount, IComparer<T> comparer = null)
+        internal Node<T> Consolidate(Node<T> root, int nodeCount, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
 

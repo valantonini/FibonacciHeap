@@ -7,12 +7,20 @@ namespace PerfectPath.Tests
 {
     public class FibonacciHeapConsolidateTests
     {
+        private FibonacciHeap<int> _heap;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _heap = new FibonacciHeap<int>();
+        }
+
         [Test]
         public void Consolidate_1Node_CorrectSiblings()
         {
             var node = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
 
-            FibonacciHeap<int>.Consolidate(node, 1);
+            _heap.Consolidate(node, 1);
 
             Assert.AreEqual(node, node.Prev);
             Assert.AreEqual(node, node.Next);
@@ -24,8 +32,8 @@ namespace PerfectPath.Tests
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
 
-            FibonacciHeap<int>.Join(node1, node2);
-            FibonacciHeap<int>.Consolidate(node1, 2);
+            _heap.Join(node1, node2);
+            _heap.Consolidate(node1, 2);
 
             Assert.AreEqual(node1, node1.Prev);
             Assert.AreEqual(node1, node1.Next);
@@ -40,8 +48,8 @@ namespace PerfectPath.Tests
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
 
-            FibonacciHeap<int>.Join(node1, node2);
-            FibonacciHeap<int>.Consolidate(node1, 2);
+            _heap.Join(node1, node2);
+            _heap.Consolidate(node1, 2);
 
             Assert.AreEqual(1, node1.Degree);
             Assert.AreEqual(0, node2.Degree);
@@ -53,8 +61,8 @@ namespace PerfectPath.Tests
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
 
-            FibonacciHeap<int>.Join(node1, node2);
-            FibonacciHeap<int>.Consolidate(node1, 2);
+            _heap.Join(node1, node2);
+            _heap.Consolidate(node1, 2);
 
             Assert.IsNull(node1.Parent);
             Assert.AreEqual(node1, node2.Parent);
@@ -66,8 +74,8 @@ namespace PerfectPath.Tests
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
 
-            FibonacciHeap<int>.Join(node1, node2);
-            var newMin = FibonacciHeap<int>.Consolidate(node1, 2);
+            _heap.Join(node1, node2);
+            var newMin = _heap.Consolidate(node1, 2);
 
             Assert.AreEqual(5, newMin.Value);
         }
@@ -78,13 +86,13 @@ namespace PerfectPath.Tests
             var node1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(3);
             var node2 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(4);
 
-            FibonacciHeap<int>.AddChild(node1, node2);
+            _heap.AddChild(node1, node2);
 
             var node3 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
 
-            FibonacciHeap<int>.Join(node3, node1);
+            _heap.Join(node3, node1);
 
-            var newMin = FibonacciHeap<int>.Consolidate(node3, 2);
+            var newMin = _heap.Consolidate(node3, 2);
 
             Assert.AreEqual(3, newMin.Value);
         }
@@ -95,10 +103,10 @@ namespace PerfectPath.Tests
             var tree2 = CreateTree(new int[] { 2 });
             var tree3 = CreateTree(new int[] { 3, 4 });
 
-            FibonacciHeap<int>.Join(tree1, tree2);
-            FibonacciHeap<int>.Join(tree1, tree3);
+            _heap.Join(tree1, tree2);
+            _heap.Join(tree1, tree3);
 
-            var consolidated = FibonacciHeap<int>.Consolidate(tree1, 3);
+            var consolidated = _heap.Consolidate(tree1, 3);
 
             var enumeratedSiblings = NodeDebugTools<int>.IterateSiblings(consolidated);
 
@@ -115,7 +123,7 @@ namespace PerfectPath.Tests
 
             Assert.AreEqual(sequence.Length, count);
 
-            var consolidated = FibonacciHeap<int>.Consolidate(siblings, count);
+            var consolidated = _heap.Consolidate(siblings, count);
 
             var consolidatedCount = NodeDebugTools<int>.IterateSiblings(consolidated).Count();
 
@@ -134,7 +142,7 @@ namespace PerfectPath.Tests
                 }
                 else
                 {
-                    FibonacciHeap<int>.AddChild(node, newNode);
+                    _heap.AddChild(node, newNode);
                 }
             }
             return node;
@@ -153,7 +161,7 @@ namespace PerfectPath.Tests
                 }
                 else
                 {
-                    FibonacciHeap<int>.Join(node, newNode);
+                    _heap.Join(node, newNode);
                 }
             }
             return node;
