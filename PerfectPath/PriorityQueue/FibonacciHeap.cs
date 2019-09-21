@@ -8,13 +8,14 @@ namespace PerfectPath.PriorityQueue
 {
     public class FibonacciHeap<T> : IPriorityQueue<T>
     {
-        public static readonly IUpdateDegree<T> DegreeUpdatingStrategy = new AccurateDegreeUpdater<T>();
         public static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
 
         private Node<T> _min = null;
-        private readonly IComparer<T> _comparer;
+        private readonly IComparer<T> _comparer; 
 
         public int Count { get; private set; }
+
+        public IUpdateDegree<T> DegreeUpdatingStrategy = new AccurateDegreeUpdater<T>();
 
         public FibonacciHeap() : this(Comparer<T>.Default) { }
 

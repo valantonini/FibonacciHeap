@@ -1,9 +1,11 @@
+
 using NUnit.Framework;
 using PerfectPath.PriorityQueue;
+using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 
-namespace PerfectPath.Tests
+namespace PerfectPath.Tests.DegreeUpdatingStrategies
 {
-    public class FibonacciHeapDegreeTests
+    public class AccurateDegreeUpdaterTests
     {
         private FibonacciHeap<int> _heap;
 
@@ -11,6 +13,7 @@ namespace PerfectPath.Tests
         public void SetUp()
         {
             _heap = new FibonacciHeap<int>();
+            _heap.DegreeUpdatingStrategy = new AccurateDegreeUpdater<int>();
         }
 
         [Test]
