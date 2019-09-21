@@ -1,4 +1,5 @@
 using System;
+using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -7,6 +8,7 @@ namespace PerfectPath.PriorityQueue
 {
     public class FibonacciHeap<T> : IPriorityQueue<T>
     {
+        public static readonly IUpdateDegree<T> DegreeUpdatingStrategy = new AccurateDegreeUpdater<T>();
         public static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
 
         private Node<T> _min = null;
@@ -109,22 +111,8 @@ namespace PerfectPath.PriorityQueue
                 Join(parent.Child, child);
             }
 
-            // go up parents updating their degree unless they are bigger due to siblings having higher degree
-            var p = parent;
-            var c = child;
-            while (p != null)
-            {
-                if (p.Degree >= c.Degree + 1)
-                {
-                    break; // bigger sibling already exists 
-                }
-                else
-                {
-                    p.Degree = c.Degree + 1;
-                    p = p.Parent;
-                    c = p;
-                }
-            }
+            // Update parent's degree
+            DegreeUpdatingStrategy.UpdateParentsDegreeFromChildAdd(parent, child);
         }
 
         /// <summary>
@@ -145,43 +133,7 @@ namespace PerfectPath.PriorityQueue
         /// <summary>
         internal static Node<T> Cut(Node<T> node)
         {
-            var parent = node.Parent;
-            var child = node;
-            while (parent != null)
-            {
-                // go up the chain updating parent's degrees
-                if (parent.Degree == child.Degree + 1)
-                {
-                    var biggestDegree = 0;
-
-                    // iterate through adjacent nodes to find the biggest to recalc parent degree
-                    var start = child;
-                    var next = child.Next;
-                    do
-                    {
-                        if (next == node)
-                        {
-                            continue; // skip current node as it is the biggest and will be removed
-                        }
-                        else
-                        {
-                            biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
-                        }
-
-                        next = next.Next;
-                    }
-                    while (next != start);
-                    // update parent's degree
-                    parent.Degree = biggestDegree;
-                }
-                else
-                {
-                    break;
-                }
-
-                child = parent;
-                parent = parent.Parent;
-            }
+            DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(node);
 
 
             // remove node from adjacent by:
