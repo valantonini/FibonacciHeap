@@ -22,7 +22,21 @@ namespace PerfectPath.Tests
                             .Distinct()
                             .ToList();
 
-            var timer = Stopwatch.StartNew();
+
+            var baselineTimer = Stopwatch.StartNew();
+            var queueB = new BaselinePriorityQueue<int>();
+            for (var i = 0; i < numbers.Count; i++)
+            {
+                queueB.Push(numbers[i]);
+                if (i % mod == 0)
+                {
+                    queueB.PopMin();
+                }
+            }
+            baselineTimer.Stop();
+            var queueElapsed = baselineTimer.ElapsedMilliseconds;
+
+            var heapTimer = Stopwatch.StartNew();
             var heap = new FibonacciHeap<int>();
             for (var i = 0; i < numbers.Count; i++)
             {
@@ -32,8 +46,8 @@ namespace PerfectPath.Tests
                     heap.PopMin();
                 }
             }
-            timer.Stop();
-            var heapElapsed = timer.ElapsedMilliseconds;
+            heapTimer.Stop();
+            var heapElapsed = heapTimer.ElapsedMilliseconds;
             stringBuilder.AppendLine($"Heap: {numbers.Count} processed in {heapElapsed}ms");
 
             // timer = Stopwatch.StartNew();
@@ -48,18 +62,6 @@ namespace PerfectPath.Tests
             // timer.Stop();
             // stringBuilder.AppendLine($"List: {numbers.Count} processed in {timer.ElapsedMilliseconds}ms");
 
-            timer = Stopwatch.StartNew();
-            var queueB = new BaselinePriorityQueue<int>();
-            for (var i = 0; i < numbers.Count; i++)
-            {
-                queueB.Push(numbers[i]);
-                if (i % mod == 0)
-                {
-                    queueB.PopMin();
-                }
-            }
-            timer.Stop();
-            var queueElapsed = timer.ElapsedMilliseconds;
 
             var variance = heapElapsed < queueElapsed
                             ? ((double)heapElapsed / (double)queueElapsed) * (double)100 * -1

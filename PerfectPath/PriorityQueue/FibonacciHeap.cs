@@ -15,7 +15,7 @@ namespace PerfectPath.PriorityQueue
 
         public int Count { get; private set; }
 
-        public IUpdateDegree<T> DegreeUpdatingStrategy = new AccurateDegreeUpdater<T>();
+        public IUpdateDegree<T> DegreeUpdatingStrategy = new LazyDegreeUpdater<T>();
 
         public FibonacciHeap() : this(Comparer<T>.Default) { }
 
