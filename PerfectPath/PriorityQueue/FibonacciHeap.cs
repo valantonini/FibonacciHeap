@@ -86,7 +86,7 @@ namespace PerfectPath.PriorityQueue
 
             _min = min == minSibling // there are no other nodes
                         ? null // heap empty 
-                        : Consolidate(minSibling, Count, _comparer); // clean up the heap
+                        : Consolidate(minSibling, Count); // clean up the heap
 
 #if (DEBUG)
             //System.Console.WriteLine(NodeDebugTools<T>.Stringify(_min));
@@ -161,10 +161,8 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal Node<T> Consolidate(Node<T> root, int nodeCount, IComparer<T> comparer = null)
+        internal Node<T> Consolidate(Node<T> root, int nodeCount)
         {
-            comparer = comparer ?? Comparer<T>.Default;
-
             var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1; // magic to ensure array won't be too small (index will be tree degree)
             var array = new Node<T>[arraySize];
 
@@ -178,7 +176,7 @@ namespace PerfectPath.PriorityQueue
 
                 while (mergeTarget != null)
                 {
-                    if (comparer.Compare(mergeSource.Value, mergeTarget.Value) < 0)
+                    if (_comparer.Compare(mergeSource.Value, mergeTarget.Value) < 0)
                     {
                         AddChild(mergeSource, mergeTarget);
                     }
@@ -223,7 +221,7 @@ namespace PerfectPath.PriorityQueue
                     }
                     else
                     {
-                        if (comparer.Compare(node.Value, newMin.Value) < 0)
+                        if (_comparer.Compare(node.Value, newMin.Value) < 0)
                         {
                             newMin = node;
                         }
