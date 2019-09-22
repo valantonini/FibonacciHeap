@@ -31,24 +31,23 @@ namespace PerfectPath.PriorityQueue
 
         public void Push(T item)
         {
+            var node = new Node<T>(item);
+            node.Prev = node.Next = node; // join node to self
+
             // first node in queue
             if (_min == null)
             {
-                _min = new Node<T>(item);
-                _min.Prev = _min.Next = _min; // join node to self
+                _min = node;
             }
             else
             {
-                var newNode = new Node<T>(item);
-                newNode.Prev = newNode.Next = newNode;
-
                 // join node to current min
-                Join(_min, newNode);
+                Join(_min, node);
 
                 // set min to point to new node if smaller
                 if (_comparer.Compare(item, _min.Value) < 0)
                 {
-                    _min = newNode;
+                    _min = node;
                 }
             }
 

@@ -63,14 +63,12 @@ namespace PerfectPath.Tests.PriorityQueue
             // stringBuilder.AppendLine($"List: {numbers.Count} processed in {timer.ElapsedMilliseconds}ms");
 
 
-            var variance = heapElapsed < queueElapsed
-                            ? ((double)heapElapsed / (double)queueElapsed) * (double)100 * -1
-                            : ((double)queueElapsed / (double)heapElapsed) * (double)100;
+            var variance = ((double)heapElapsed / (double)queueElapsed) * (double)100;
 
             stringBuilder.AppendLine($"Queue: {numbers.Count} processed in {queueElapsed}ms");
 
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"variance {heapElapsed - queueElapsed}ms ({variance}%)");
+            stringBuilder.AppendLine($"variance {heapElapsed - queueElapsed}ms ({Math.Round(variance, 2)}%)");
             stringBuilder.AppendLine();
 
             Console.WriteLine(stringBuilder.ToString());

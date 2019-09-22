@@ -131,7 +131,7 @@ namespace PerfectPath.Tests.PriorityQueue
         }
 
         [Test]
-        public void Cut_2NodesWithDirectParent_IncorrectParentForDeferredUpdating()
+        public void Cut_2NodesWithDirectParent_NoReferenceToParent()
         {
             var p1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
             var c1 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(1);
@@ -141,7 +141,6 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.AddChild(p1, c2);
             _heap.Cut(c1);
 
-            // although cut, we will defer parent reassignment until collapse
             Assert.AreEqual(null, c1.Parent);
         }
     }
