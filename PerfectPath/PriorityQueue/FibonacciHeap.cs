@@ -136,14 +136,12 @@ namespace PerfectPath.PriorityQueue
         {
             DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(node);
 
-
             // remove node from adjacent by:
-
             node.Next.Prev = node.Prev; // joining node on left of this node to node on right
             node.Prev.Next = node.Next; // joining node on right of this one to node on left
 
             // update parent's child if the parents child is the node about to be removed
-            if (node.Parent != null && node.Parent.Child == node)
+            if (node.Parent?.Child == node)
             {
                 if (node.Next == node)
                 {
