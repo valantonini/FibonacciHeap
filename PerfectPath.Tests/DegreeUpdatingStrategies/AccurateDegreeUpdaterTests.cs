@@ -3,7 +3,7 @@ using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 
-namespace PerfectPath.Tests.DegreeUpdatingStrategies
+namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
 {
     public class AccurateDegreeUpdaterTests
     {

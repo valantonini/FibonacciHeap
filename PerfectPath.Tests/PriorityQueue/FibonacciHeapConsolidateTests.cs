@@ -3,7 +3,7 @@ using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 using System.Linq;
 
-namespace PerfectPath.Tests
+namespace PerfectPath.Tests.PriorityQueue
 {
     public class FibonacciHeapConsolidateTests
     {

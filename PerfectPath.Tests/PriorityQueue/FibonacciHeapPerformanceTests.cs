@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using PerfectPath.PriorityQueue;
 
-namespace PerfectPath.Tests
+namespace PerfectPath.Tests.PriorityQueue
 {
     public class FibonacciHeapPerformanceTests
     {

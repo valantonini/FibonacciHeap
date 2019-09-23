@@ -1,8 +1,7 @@
 using PerfectPath.PriorityQueue;
-using System.Linq;
 using System.Collections.Generic;
 
-namespace PerfectPath.Tests
+namespace PerfectPath.Tests.PriorityQueue
 {
     public class BaselinePriorityQueue<T> : IPriorityQueue<T>
     {

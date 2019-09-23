@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 
-namespace PerfectPath.Tests
+namespace PerfectPath.Tests.PriorityQueue
 {
     public static class FibonacciHeapTestHelpers
     {
