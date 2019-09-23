@@ -5,7 +5,7 @@ using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests.PriorityQueue
 {
-    public class FibonacciHeapLargeDatasetTest
+    public class FibonacciHeapLargeDatasetTests
     {
         [Test]
         public void FibonacciHeap_ShouldOrderLargeDataset()
