@@ -10,8 +10,11 @@ namespace PerfectPath.Tests.PathFinder
         {
             var matrix = new PathFinderGrid(4, 5);
 
-            Assert.AreEqual(matrix.Height, 4);
-            Assert.AreEqual(matrix.Width, 5);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(4, matrix.Height);
+                Assert.AreEqual(5, matrix.Width);
+            });
         }
 
         [Test]

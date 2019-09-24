@@ -26,10 +26,13 @@ namespace PerfectPath.Tests.PriorityQueue
 
             var actual = NodeDebugTools<int>.IterateSiblings(p1).ToList();
 
-            Assert.AreEqual(3, actual.Count());
-            Assert.AreEqual(1, actual[0].Value);
-            Assert.AreEqual(2, actual[1].Value);
-            Assert.AreEqual(3, actual[2].Value);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(3, actual.Count());
+                Assert.AreEqual(1, actual[0].Value);
+                Assert.AreEqual(2, actual[1].Value);
+                Assert.AreEqual(3, actual[2].Value);
+            });
         }
     }
 }

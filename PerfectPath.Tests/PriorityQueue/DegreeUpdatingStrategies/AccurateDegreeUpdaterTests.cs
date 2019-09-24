@@ -31,8 +31,11 @@ namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
 
             _heap.AddChild(parent, child);
 
-            Assert.AreEqual(1, parent.Degree);
-            Assert.AreEqual(0, child.Degree);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(1, parent.Degree);
+                Assert.AreEqual(0, child.Degree);
+            });
         }
 
         [Test]
@@ -45,9 +48,12 @@ namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
             _heap.AddChild(child, grandChild);
             _heap.AddChild(parent, child);
 
-            Assert.AreEqual(2, parent.Degree);
-            Assert.AreEqual(1, child.Degree);
-            Assert.AreEqual(0, grandChild.Degree);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(2, parent.Degree);
+                Assert.AreEqual(1, child.Degree);
+                Assert.AreEqual(0, grandChild.Degree);
+            });
         }
 
         [Test]
@@ -60,9 +66,12 @@ namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
             _heap.AddChild(parent, child);
             _heap.AddChild(child, grandChild);
 
-            Assert.AreEqual(2, parent.Degree);
-            Assert.AreEqual(1, child.Degree);
-            Assert.AreEqual(0, grandChild.Degree);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(2, parent.Degree);
+                Assert.AreEqual(1, child.Degree);
+                Assert.AreEqual(0, grandChild.Degree);
+            });
         }
 
         [Test]
@@ -77,10 +86,13 @@ namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
             _heap.AddChild(p2, c2);
             _heap.AddChild(p1, p2);
 
-            Assert.AreEqual(2, p1.Degree);
-            Assert.AreEqual(1, p2.Degree);
-            Assert.AreEqual(0, c1.Degree);
-            Assert.AreEqual(0, c2.Degree);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(2, p1.Degree);
+                Assert.AreEqual(1, p2.Degree);
+                Assert.AreEqual(0, c1.Degree);
+                Assert.AreEqual(0, c2.Degree);
+            });
         }
 
         [Test]

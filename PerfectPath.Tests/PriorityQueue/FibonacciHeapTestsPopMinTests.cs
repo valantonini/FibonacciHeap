@@ -20,9 +20,12 @@ namespace PerfectPath.Tests.PriorityQueue
             fh.Push(7);
             var actual = fh.PopMin();
 
-            Assert.AreEqual(7, actual);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(7, actual);
 
-            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+                Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+            });
         }
 
         [Test]
@@ -36,10 +39,13 @@ namespace PerfectPath.Tests.PriorityQueue
             var first = fh.PopMin();
             var second = fh.PopMin();
 
-            Assert.AreEqual(6, first);
-            Assert.AreEqual(7, second);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(6, first);
+                Assert.AreEqual(7, second);
 
-            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+                Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+            });
         }
 
         [Test]
@@ -55,11 +61,14 @@ namespace PerfectPath.Tests.PriorityQueue
             var second = fh.PopMin();
             var third = fh.PopMin();
 
-            Assert.AreEqual(5, first);
-            Assert.AreEqual(6, second);
-            Assert.AreEqual(7, third);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(5, first);
+                Assert.AreEqual(6, second);
+                Assert.AreEqual(7, third);
 
-            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+                Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+            });
         }
 
         [Test]
@@ -85,16 +94,19 @@ namespace PerfectPath.Tests.PriorityQueue
             var seven = fh.PopMin();
             var eigth = fh.PopMin();
 
-            Assert.AreEqual(1, first);
-            Assert.AreEqual(2, second);
-            Assert.AreEqual(3, third);
-            Assert.AreEqual(4, fourth);
-            Assert.AreEqual(5, fifth);
-            Assert.AreEqual(6, sixth);
-            Assert.AreEqual(7, seven);
-            Assert.AreEqual(8, eigth);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(1, first);
+                Assert.AreEqual(2, second);
+                Assert.AreEqual(3, third);
+                Assert.AreEqual(4, fourth);
+                Assert.AreEqual(5, fifth);
+                Assert.AreEqual(6, sixth);
+                Assert.AreEqual(7, seven);
+                Assert.AreEqual(8, eigth);
 
-            Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+                Assert.Throws<HeapEmptyException>(() => fh.PopMin());
+            });
         }
 
         [TestCase(new int[] { 1, -1 })]

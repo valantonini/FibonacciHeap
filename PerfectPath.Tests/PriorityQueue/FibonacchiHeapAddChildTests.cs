@@ -43,8 +43,11 @@ namespace PerfectPath.Tests.PriorityQueue
 
             _heap.AddChild(p1, p2);
 
-            Assert.AreEqual(p2, p2.Prev);
-            Assert.AreEqual(p2, p2.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p2, p2.Prev);
+                Assert.AreEqual(p2, p2.Next);
+            });
         }
 
         [Test]
@@ -57,11 +60,14 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.AddChild(p1, p2);
             _heap.AddChild(p1, p3);
 
-            Assert.AreEqual(p2, p3.Prev);
-            Assert.AreEqual(p2, p3.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p2, p3.Prev);
+                Assert.AreEqual(p2, p3.Next);
 
-            Assert.AreEqual(p3, p2.Prev);
-            Assert.AreEqual(p3, p2.Next);
+                Assert.AreEqual(p3, p2.Prev);
+                Assert.AreEqual(p3, p2.Next);
+            });
         }
 
         [Test]
@@ -79,14 +85,17 @@ namespace PerfectPath.Tests.PriorityQueue
             // Parent
             // c1 > c2 > c3 
 
-            Assert.AreEqual(c3, c1.Prev);
-            Assert.AreEqual(c2, c1.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(c3, c1.Prev);
+                Assert.AreEqual(c2, c1.Next);
 
-            Assert.AreEqual(c1, c2.Prev);
-            Assert.AreEqual(c3, c2.Next);
+                Assert.AreEqual(c1, c2.Prev);
+                Assert.AreEqual(c3, c2.Next);
 
-            Assert.AreEqual(c2, c3.Prev);
-            Assert.AreEqual(c1, c3.Next);
+                Assert.AreEqual(c2, c3.Prev);
+                Assert.AreEqual(c1, c3.Next);
+            });
         }
 
         [Test]
@@ -99,8 +108,11 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.AddChild(p1, p2);
             _heap.AddChild(p1, p3);
 
-            Assert.AreEqual(p1, p2.Parent);
-            Assert.AreEqual(p1, p3.Parent);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p1, p2.Parent);
+                Assert.AreEqual(p1, p3.Parent);
+            });
         }
     }
 }

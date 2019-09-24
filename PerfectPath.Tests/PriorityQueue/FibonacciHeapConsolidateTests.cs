@@ -22,8 +22,11 @@ namespace PerfectPath.Tests.PriorityQueue
 
             _heap.Consolidate(node, 1);
 
-            Assert.AreEqual(node, node.Prev);
-            Assert.AreEqual(node, node.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(node, node.Prev);
+                Assert.AreEqual(node, node.Next);
+            });
         }
 
         [Test]
@@ -35,11 +38,14 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.Join(node1, node2);
             _heap.Consolidate(node1, 2);
 
-            Assert.AreEqual(node1, node1.Prev);
-            Assert.AreEqual(node1, node1.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(node1, node1.Prev);
+                Assert.AreEqual(node1, node1.Next);
 
-            Assert.AreEqual(node2, node2.Prev);
-            Assert.AreEqual(node2, node2.Next);
+                Assert.AreEqual(node2, node2.Prev);
+                Assert.AreEqual(node2, node2.Next);
+            });
         }
 
         [Test]
@@ -51,8 +57,11 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.Join(node1, node2);
             _heap.Consolidate(node1, 2);
 
-            Assert.AreEqual(1, node1.Degree);
-            Assert.AreEqual(0, node2.Degree);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(1, node1.Degree);
+                Assert.AreEqual(0, node2.Degree);
+            });
         }
 
         [Test]
@@ -64,8 +73,11 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.Join(node1, node2);
             _heap.Consolidate(node1, 2);
 
-            Assert.IsNull(node1.Parent);
-            Assert.AreEqual(node1, node2.Parent);
+            Assert.Multiple(() =>
+            {
+                Assert.IsNull(node1.Parent);
+                Assert.AreEqual(node1, node2.Parent);
+            });
         }
 
         [Test]

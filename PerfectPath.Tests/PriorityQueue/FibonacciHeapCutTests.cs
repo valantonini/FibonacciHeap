@@ -20,8 +20,11 @@ namespace PerfectPath.Tests.PriorityQueue
 
             _heap.Cut(p1);
 
-            Assert.AreEqual(p1, p1.Next);
-            Assert.AreEqual(p1, p1.Prev);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p1, p1.Next);
+                Assert.AreEqual(p1, p1.Prev);
+            });
         }
 
         [Test]
@@ -33,11 +36,14 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.Join(p1, p2);
             _heap.Cut(p1);
 
-            Assert.AreEqual(p1, p1.Next);
-            Assert.AreEqual(p1, p1.Prev);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p1, p1.Next);
+                Assert.AreEqual(p1, p1.Prev);
 
-            Assert.AreEqual(p2, p2.Next);
-            Assert.AreEqual(p2, p2.Prev);
+                Assert.AreEqual(p2, p2.Next);
+                Assert.AreEqual(p2, p2.Prev);
+            });
         }
 
         [Test]
@@ -51,11 +57,14 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.AddChild(p1, c2);
             _heap.Cut(c2);
 
-            Assert.AreEqual(c1, c1.Next);
-            Assert.AreEqual(c1, c1.Prev);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(c1, c1.Next);
+                Assert.AreEqual(c1, c1.Prev);
 
-            Assert.AreEqual(c2, c2.Next);
-            Assert.AreEqual(c2, c2.Prev);
+                Assert.AreEqual(c2, c2.Next);
+                Assert.AreEqual(c2, c2.Prev);
+            });
         }
 
         [Test]
@@ -83,11 +92,14 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.AddChild(p1, c2);
             _heap.Cut(c1);
 
-            Assert.AreEqual(c1, c1.Next);
-            Assert.AreEqual(c1, c1.Prev);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(c1, c1.Next);
+                Assert.AreEqual(c1, c1.Prev);
 
-            Assert.AreEqual(c2, c2.Next);
-            Assert.AreEqual(c2, c2.Prev);
+                Assert.AreEqual(c2, c2.Next);
+                Assert.AreEqual(c2, c2.Prev);
+            });
         }
 
         [Test]

@@ -21,11 +21,14 @@ namespace PerfectPath.Tests.PriorityQueue
 
             _heap.Join(p1, p2);
 
-            Assert.AreEqual(p2, p1.Prev);
-            Assert.AreEqual(p2, p1.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p2, p1.Prev);
+                Assert.AreEqual(p2, p1.Next);
 
-            Assert.AreEqual(p1, p2.Prev);
-            Assert.AreEqual(p1, p2.Next);
+                Assert.AreEqual(p1, p2.Prev);
+                Assert.AreEqual(p1, p2.Next);
+            });
         }
 
         [Test]
@@ -38,14 +41,17 @@ namespace PerfectPath.Tests.PriorityQueue
             _heap.Join(p2, p3);
             _heap.Join(p1, p2);
 
-            Assert.AreEqual(p3, p1.Prev);
-            Assert.AreEqual(p2, p1.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(p3, p1.Prev);
+                Assert.AreEqual(p2, p1.Next);
 
-            Assert.AreEqual(p1, p2.Prev);
-            Assert.AreEqual(p3, p2.Next);
+                Assert.AreEqual(p1, p2.Prev);
+                Assert.AreEqual(p3, p2.Next);
 
-            Assert.AreEqual(p2, p3.Prev);
-            Assert.AreEqual(p1, p3.Next);
+                Assert.AreEqual(p2, p3.Prev);
+                Assert.AreEqual(p1, p3.Next);
+            });
         }
 
         [Test]
@@ -67,23 +73,26 @@ namespace PerfectPath.Tests.PriorityQueue
 
             _heap.Join(p1, n1);
 
-            Assert.AreEqual(n3, p1.Prev);
-            Assert.AreEqual(p2, p1.Next);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(n3, p1.Prev);
+                Assert.AreEqual(p2, p1.Next);
 
-            Assert.AreEqual(p1, p2.Prev);
-            Assert.AreEqual(p3, p2.Next);
+                Assert.AreEqual(p1, p2.Prev);
+                Assert.AreEqual(p3, p2.Next);
 
-            Assert.AreEqual(p2, p3.Prev);
-            Assert.AreEqual(n1, p3.Next);
+                Assert.AreEqual(p2, p3.Prev);
+                Assert.AreEqual(n1, p3.Next);
 
-            Assert.AreEqual(p3, n1.Prev);
-            Assert.AreEqual(n2, n1.Next);
+                Assert.AreEqual(p3, n1.Prev);
+                Assert.AreEqual(n2, n1.Next);
 
-            Assert.AreEqual(n1, n2.Prev);
-            Assert.AreEqual(n3, n2.Next);
+                Assert.AreEqual(n1, n2.Prev);
+                Assert.AreEqual(n3, n2.Next);
 
-            Assert.AreEqual(n2, n3.Prev);
-            Assert.AreEqual(p1, n3.Next);
+                Assert.AreEqual(n2, n3.Prev);
+                Assert.AreEqual(p1, n3.Next);
+            });
         }
     }
 }
