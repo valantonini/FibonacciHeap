@@ -1,6 +1,6 @@
-namespace PerfectPath.PathFinder
+﻿namespace PerfectPath.PathFinder
 {
-    public struct AStarNode
+    public struct AStarCell
     {
         ///<summary>
         /// Row.
@@ -26,5 +26,8 @@ namespace PerfectPath.PathFinder
         /// G + H
         ///</summary>
         public int F { get; set; }
+
+        public int ParentX { get; set; }
+        public int ParentY { get; set; }
     }
 }

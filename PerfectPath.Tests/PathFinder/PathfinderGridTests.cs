@@ -8,7 +8,7 @@ namespace PerfectPath.Tests.PathFinder
         [Test]
         public void ShouldInstantiateAMatrix()
         {
-            var matrix = new PathFinderGrid(4, 5);
+            var matrix = new PathFinderGrid<byte>(4, 5);
 
             Assert.Multiple(() =>
             {
@@ -20,7 +20,7 @@ namespace PerfectPath.Tests.PathFinder
         [Test]
         public void ShouldSet2dCoordinates()
         {
-            var matrix = new PathFinderGrid(3, 3);
+            var matrix = new PathFinderGrid<byte>(3, 3);
 
             byte index = 0;
             for (var x = 0; x < 3; x++)

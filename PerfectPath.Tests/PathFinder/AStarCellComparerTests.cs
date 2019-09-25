@@ -1,21 +1,21 @@
-using PerfectPath.PathFinder;
+﻿using PerfectPath.PathFinder;
 using NUnit.Framework;
 
 namespace PerfectPath.Tests.PathFinder
 {
-    public class AStarNodeComparerTests
+    public class AStarCellComparerTests
     {
-        private AStarNodeFComparer _comparer = new AStarNodeFComparer();
+        private AStarCellFComparer _comparer = new AStarCellFComparer();
 
         [Test]
         public void CompareTo_LessThan_Success()
         {
-            var node1 = new AStarNode
+            var node1 = new AStarCell
             {
                 F = 1,
             };
 
-            var node2 = new AStarNode
+            var node2 = new AStarCell
             {
                 F = 2,
             };
@@ -26,12 +26,12 @@ namespace PerfectPath.Tests.PathFinder
         [Test]
         public void CompareTo_GreaterThan_Success()
         {
-            var node1 = new AStarNode
+            var node1 = new AStarCell
             {
                 F = 3,
             };
 
-            var node2 = new AStarNode
+            var node2 = new AStarCell
             {
                 F = 2,
             };
@@ -42,12 +42,12 @@ namespace PerfectPath.Tests.PathFinder
         [Test]
         public void CompareTo_Equal_Success()
         {
-            var node1 = new AStarNode
+            var node1 = new AStarCell
             {
                 F = 7,
             };
 
-            var node2 = new AStarNode
+            var node2 = new AStarCell
             {
                 F = 7,
             };
