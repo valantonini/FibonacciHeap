@@ -1,35 +1,38 @@
 using System;
-using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
+using PerfectPath.PriorityQueue.NodeTrackingStrategies;
 
 [assembly: InternalsVisibleTo("PerfectPath.Tests")]
 namespace PerfectPath.PriorityQueue
 {
-    public class FibonacciHeap<Value> : IPriorityQueue<Value>
+    public class FibonacciHeap<T> : IPriorityQueue<T>
     {
         public static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
 
-        private Node<Value> _min = null;
-        private readonly IComparer<Value> _comparer; 
+        private Node<T> _min = null;
+        private readonly IComparer<T> _comparer;
 
         public int Count { get; private set; }
 
-        public IUpdateDegree<Value> DegreeUpdatingStrategy = new LazyDegreeUpdater<Value>();
+        public IUpdateDegree<T> DegreeUpdatingStrategy = new LazyDegreeUpdater<T>();
+        public ITrackNodes<T> NodeTrackingStrategy = new DictionaryTracker<T>();
 
-        public FibonacciHeap(IComparer<Value> comparer = null)
+
+        public FibonacciHeap(IComparer<T> comparer = null)
         {
-            _comparer = comparer ?? Comparer<Value>.Default;
+            _comparer = comparer ?? Comparer<T>.Default;
         }
 
-        public Value Peek()
+        public T Peek()
         {
             return _min.Value;
         }
 
-        public void Push(Value item)
+        public void Push(T item)
         {
-            var node = new Node<Value>(item);
+            var node = new Node<T>(item);
             node.Prev = node.Next = node; // join node to self
 
             // first node in queue
@@ -50,9 +53,12 @@ namespace PerfectPath.PriorityQueue
             }
 
             Count++;
+
+            //to get a reference to the node to decrease key
+            NodeTrackingStrategy.Add(node);
         }
 
-        public Value PopMin()
+        public T PopMin()
         {
             if (_min == null)
             {
@@ -62,27 +68,27 @@ namespace PerfectPath.PriorityQueue
             // want to iterate through root nodes. Get a reference to min's next as we are about
             // to cut it from it's siblings
             var minSibling = _min.Next;
-            var min = Cut(_min);
+            var result = Cut(_min);
 
             // children need to be promoted to root before we remove it
-            if (min.Child != null)
+            if (result.Child != null)
             {
-                if (minSibling == min)
+                if (minSibling == result)
                 {
                     // if min was the only root node, it's children are now the root
-                    minSibling = min.Child;
+                    minSibling = result.Child;
                 }
                 else
                 {
                     // join children to soon to be new root
-                    Join(minSibling, min.Child);
+                    Join(minSibling, result.Child);
                 }
 
                 // sever child, children will sever ties to parent in consolidate
-                min.Child = null;
+                result.Child = null;
             }
 
-            _min = min == minSibling // there are no other nodes
+            _min = result == minSibling // there are no other nodes
                         ? null // heap empty 
                         : Consolidate(minSibling, Count); // clean up the heap
 
@@ -91,11 +97,12 @@ namespace PerfectPath.PriorityQueue
 #endif
             Count--;
 
-            return min.Value;
+            NodeTrackingStrategy.Remove(result.Value);
 
+            return result.Value;
         }
 
-        internal void AddChild(Node<Value> parent, Node<Value> child)
+        internal void AddChild(Node<T> parent, Node<T> child)
         {
             child.Parent = parent;
 
@@ -115,7 +122,7 @@ namespace PerfectPath.PriorityQueue
 
         /// <summary>
         /// Joins 2 nodes. Those nodes can have siblings / links to adjacent
-        internal void Join(Node<Value> first, Node<Value> second)
+        internal void Join(Node<T> first, Node<T> second)
         {
             var lastNodeInSecond = second.Prev; // last node in second
 
@@ -129,7 +136,7 @@ namespace PerfectPath.PriorityQueue
         /// Sever the adjacent and reassign child to parent's child if this was the connection
         /// to the parent.
         /// <summary>
-        internal Node<Value> Cut(Node<Value> node)
+        internal Node<T> Cut(Node<T> node)
         {
             DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(node);
 
@@ -159,10 +166,10 @@ namespace PerfectPath.PriorityQueue
             return node;
         }
 
-        internal Node<Value> Consolidate(Node<Value> root, int nodeCount)
+        internal Node<T> Consolidate(Node<T> root, int nodeCount)
         {
             var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1; // magic to ensure array won't be too small (index will be tree degree)
-            var array = new Node<Value>[arraySize];
+            var array = new Node<T>[arraySize];
 
             var next = root.Next;
             var current = Cut(root);
@@ -202,8 +209,8 @@ namespace PerfectPath.PriorityQueue
             }
 
             // join togethor merged trees into 1 linked list again
-            Node<Value> newRoot = null;
-            Node<Value> newMin = null;
+            Node<T> newRoot = null;
+            Node<T> newMin = null;
             foreach (var node in array)
             {
                 if (node == null)
