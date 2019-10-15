@@ -1,5 +1,3 @@
-using PerfectPath.PriorityQueue;
-
 namespace  PerfectPath.PriorityQueue.DegreeUpdatingStrategies
 {
     public interface IUpdateDegree<T>

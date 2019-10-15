@@ -2,7 +2,7 @@
 {
     public static class AStarGridValue
     {
-        public static readonly byte OPEN = 0;
-        public static readonly byte CLOSED = 1;
+        public static readonly byte Open = 0;
+        public static readonly byte Closed = 1;
     }
 }

@@ -6,8 +6,8 @@ namespace PerfectPath.PathFinder
 {
     public class PathFinderGrid<T>
     {
-        public int Height { get; private set; }
-        public int Width { get; private set; }
+        public int Height { get; }
+        public int Width { get; }
 
         private readonly T[] _matrix;
 
