@@ -9,9 +9,10 @@ namespace PerfectPath.PriorityQueue
 {
     public class FibonacciHeap<T> : IPriorityQueue<T>
     {
-        public static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
+        // ReSharper disable once StaticMemberInGenericType
+        private static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
 
-        private Node<T> _min = null;
+        private Node<T> _min;
         private readonly IComparer<T> _comparer;
 
         public int Count { get; private set; }
@@ -122,20 +123,21 @@ namespace PerfectPath.PriorityQueue
 
         /// <summary>
         /// Joins 2 nodes. Those nodes can have siblings / links to adjacent
+        /// </summary>
         internal void Join(Node<T> first, Node<T> second)
         {
             var lastNodeInSecond = second.Prev; // last node in second
 
             first.Prev.Next = second; // last node in first
             second.Prev = first.Prev; // join first node in second to last node in first
-            lastNodeInSecond.Next = first; // join lasnode in second to first node in first
+            lastNodeInSecond.Next = first; // join last node in second to first node in first
             first.Prev = lastNodeInSecond; //join first node in first to last node in second
         }
 
         /// <summary>
         /// Sever the adjacent and reassign child to parent's child if this was the connection
         /// to the parent.
-        /// <summary>
+        /// </summary>
         internal Node<T> Cut(Node<T> node)
         {
             DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(node);
@@ -147,14 +149,9 @@ namespace PerfectPath.PriorityQueue
             // update parent's child if the parents child is the node about to be removed
             if (node.Parent?.Child == node)
             {
-                if (node.Next == node)
-                {
-                    node.Parent.Child = null; // no adjacent / siblings to replace with
-                }
-                else
-                {
-                    node.Parent.Child = node.Next; // parent's child is node on right
-                }
+                node.Parent.Child = node.Next == node 
+                    ? null // no adjacent / siblings to replace with
+                    : node.Next; // parent's child becomes node on right
             }
 
             // connect node to itself
@@ -208,7 +205,7 @@ namespace PerfectPath.PriorityQueue
 
             }
 
-            // join togethor merged trees into 1 linked list again
+            // join together merged trees into 1 linked list again
             Node<T> newRoot = null;
             Node<T> newMin = null;
             foreach (var node in array)
@@ -217,21 +214,19 @@ namespace PerfectPath.PriorityQueue
                 {
                     continue;
                 }
+
+                if (newRoot == null)
+                {
+                    newRoot = node;
+                    newMin = node;
+                }
                 else
                 {
-                    if (newRoot == null)
+                    if (_comparer.Compare(node.Value, newMin.Value) < 0)
                     {
-                        newRoot = node;
                         newMin = node;
                     }
-                    else
-                    {
-                        if (_comparer.Compare(node.Value, newMin.Value) < 0)
-                        {
-                            newMin = node;
-                        }
-                        Join(newRoot, node);
-                    }
+                    Join(newRoot, node);
                 }
             }
 
