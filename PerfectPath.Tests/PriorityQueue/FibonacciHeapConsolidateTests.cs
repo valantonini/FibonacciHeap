@@ -111,9 +111,9 @@ namespace PerfectPath.Tests.PriorityQueue
         [Test]
         public void Consolidate_LotsOfNodes_CorrectWidth()
         {
-            var tree1 = CreateTree(new int[] { 1 });
-            var tree2 = CreateTree(new int[] { 2 });
-            var tree3 = CreateTree(new int[] { 3, 4 });
+            var tree1 = CreateTree(new[] { 1 });
+            var tree2 = CreateTree(new[] { 2 });
+            var tree3 = CreateTree(new[] { 3, 4 });
 
             _heap.Join(tree1, tree2);
             _heap.Join(tree1, tree3);
@@ -126,8 +126,8 @@ namespace PerfectPath.Tests.PriorityQueue
         }
 
         // this sequence of numbers was thought to be misbehaving...
-        [TestCase(new int[] { 984556, 907815, 743545, 811641, 738779, 48315, 17001, 149360 })]
-        [TestCase(new int[] { 7, 6, 5, 8, 4, 2, 1, 3 })]
+        [TestCase(new[] { 984556, 907815, 743545, 811641, 738779, 48315, 17001, 149360 })]
+        [TestCase(new[] { 7, 6, 5, 8, 4, 2, 1, 3 })]
         public void Consolidate_LargeNumberOfSiblings(int[] sequence)
         {
             var siblings = CreateSiblings(sequence);

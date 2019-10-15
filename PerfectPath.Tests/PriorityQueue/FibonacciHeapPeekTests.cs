@@ -38,10 +38,10 @@ namespace PerfectPath.Tests.PriorityQueue
         }
 
         // Negative will Peek and assert against Math.Abs of the value
-        [TestCase(new int[] { 1, -1 })]
-        [TestCase(new int[] { 1, 2, -1 })]
-        [TestCase(new int[] { 2, 1, -1 })]
-        [TestCase(new int[] { 7, 8, 9, -7, 5, 6, -5, 4, -4, 3, 2, 99, -2 })]
+        [TestCase(new[] { 1, -1 })]
+        [TestCase(new[] { 1, 2, -1 })]
+        [TestCase(new[] { 2, 1, -1 })]
+        [TestCase(new[] { 7, 8, 9, -7, 5, 6, -5, 4, -4, 3, 2, 99, -2 })]
         public void Peek_MultipleValues_CorrectValue(int[] sequence)
         {
             var fh = new FibonacciHeap<int>();

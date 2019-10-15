@@ -12,8 +12,10 @@ namespace PerfectPath.Tests.PriorityQueue.DegreeUpdatingStrategies
         [SetUp]
         public void SetUp()
         {
-            _heap = new FibonacciHeap<int>();
-            _heap.DegreeUpdatingStrategy = new LazyDegreeUpdater<int>();
+            _heap = new FibonacciHeap<int>
+            {
+                DegreeUpdatingStrategy = new LazyDegreeUpdater<int>()
+            };
         }
 
         [Test]

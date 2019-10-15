@@ -3,7 +3,7 @@ using PerfectPath.PriorityQueue;
 
 namespace PerfectPath.Tests.PriorityQueue
 {
-    public class FibonacchiHeapAddChildTests
+    public class FibonacciHeapAddChildTests
     {
         private FibonacciHeap<int> _heap;
 

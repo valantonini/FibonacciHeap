@@ -1,5 +1,6 @@
 using PerfectPath.PriorityQueue;
 using System.Collections.Generic;
+// ReSharper disable UnusedMember.Global
 
 namespace PerfectPath.Tests.PriorityQueue
 {
@@ -20,7 +21,7 @@ namespace PerfectPath.Tests.PriorityQueue
 
         public T Peek()
         {
-            return _innerList.Count > 0 ? _innerList[0] : default(T);
+            return _innerList.Count > 0 ? _innerList[0] : default;
         }
 
         public void Clear()
@@ -28,10 +29,7 @@ namespace PerfectPath.Tests.PriorityQueue
             _innerList.Clear();
         }
 
-        public int Count
-        {
-            get { return _innerList.Count; }
-        }
+        public int Count => _innerList.Count;
 
         public void Push(T item)
         {
@@ -65,7 +63,7 @@ namespace PerfectPath.Tests.PriorityQueue
             var result = _innerList[0];
             var p = 0;
 
-            _innerList[0] = _innerList[_innerList.Count - 1];
+            _innerList[0] = _innerList[^1];
             _innerList.RemoveAt(_innerList.Count - 1);
 
             do
@@ -97,10 +95,7 @@ namespace PerfectPath.Tests.PriorityQueue
 
         public T this[int index]
         {
-            get
-            {
-                return _innerList[index];
-            }
+            get => _innerList[index];
             set
             {
                 _innerList[index] = value;

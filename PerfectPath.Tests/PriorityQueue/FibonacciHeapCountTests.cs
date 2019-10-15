@@ -36,10 +36,10 @@ namespace PerfectPath.Tests.PriorityQueue
         }
 
         // Negative will Peek and assert against Math.Abs of the value
-        [TestCase(new int[] { 1, -1 })]
-        [TestCase(new int[] { 1, 2, -1 })]
-        [TestCase(new int[] { 2, 1, -1 })]
-        [TestCase(new int[] { 7, 8, 9, -7, 5, 6, -5, 4, -4, 3, 2, 99, -2 })]
+        [TestCase(new[] { 1, -1 })]
+        [TestCase(new[] { 1, 2, -1 })]
+        [TestCase(new[] { 2, 1, -1 })]
+        [TestCase(new[] { 7, 8, 9, -7, 5, 6, -5, 4, -4, 3, 2, 99, -2 })]
         public void Count_MultipleValuesPushedAndPopped_CorrectCount(int[] sequence)
         {
             var fh = new FibonacciHeap<int>();
@@ -48,7 +48,7 @@ namespace PerfectPath.Tests.PriorityQueue
             {
                 if (value < 0)
                 {
-                    var val = fh.PopMin();
+                    fh.PopMin();
                     Assert.AreEqual(--count, fh.Count);
                 }
                 else

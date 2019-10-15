@@ -1,14 +1,14 @@
+using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 using PerfectPath.PriorityQueue.NodeTrackingStrategies;
-using NUnit.Framework;
 
-namespace PerfectPath.Tests.NodeTrackingStrategies
+namespace PerfectPath.Tests.PriorityQueue.NodeTrackingStrategies
 {
     [TestFixture]
     public class DictionaryTrackerTests
     {
-        public FibonacciHeap<int> _fibonacciHeap;
-        public ITrackNodes<int> _dictionaryKeyTracker;
+        private FibonacciHeap<int> _fibonacciHeap;
+        private ITrackNodes<int> _dictionaryKeyTracker;
 
         [SetUp]
         public void SetUp()
