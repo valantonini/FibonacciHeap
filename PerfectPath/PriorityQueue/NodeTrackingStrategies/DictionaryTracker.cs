@@ -4,7 +4,7 @@ namespace PerfectPath.PriorityQueue.NodeTrackingStrategies
 {
     public class DictionaryTracker<T> : ITrackNodes<T>
     {
-        private Dictionary<T, Node<T>> _lookup = new Dictionary<T, Node<T>>();
+        private readonly Dictionary<T, Node<T>> _lookup = new Dictionary<T, Node<T>>();
 
         public void Add(Node<T> node)
         {
@@ -18,8 +18,7 @@ namespace PerfectPath.PriorityQueue.NodeTrackingStrategies
 
         public Node<T> Remove(T value)
         {
-            Node<T> node;
-            _lookup.Remove(value, out node);
+            _lookup.Remove(value, out var node);
             return node;
         }
     }
