@@ -2,6 +2,15 @@ namespace PerfectPath.PriorityQueue
 {
     public partial class Node<T>
     {
+        public Node() : this(default)
+        {
+        }
+
+        public Node(T value)
+        {
+            Value = value;
+        }
+
         public T Value { get; internal set; }
 
         public int Degree { get; internal set; }
@@ -11,10 +20,6 @@ namespace PerfectPath.PriorityQueue
         public Node<T> Prev { get; internal set; }
         public Node<T> Next { get; internal set; }
 
-        public Node() : this(default(T)) { }
-        public Node(T value)
-        {
-            Value = value;
-        }
+        public bool Marked { get; internal set; }
     }
 }

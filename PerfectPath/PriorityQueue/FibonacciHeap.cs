@@ -5,17 +5,16 @@ using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 using PerfectPath.PriorityQueue.NodeTrackingStrategies;
 
 [assembly: InternalsVisibleTo("PerfectPath.Tests")]
+
 namespace PerfectPath.PriorityQueue
 {
     public class FibonacciHeap<T> : IPriorityQueue<T>
     {
         // ReSharper disable once StaticMemberInGenericType
         private static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
-
-        private Node<T> _min;
         private readonly IComparer<T> _comparer;
 
-        public int Count { get; private set; }
+        private Node<T> _min;
 
         public IUpdateDegree<T> DegreeUpdatingStrategy = new LazyDegreeUpdater<T>();
         public ITrackNodes<T> NodeTrackingStrategy = new DictionaryTracker<T>();
@@ -25,6 +24,8 @@ namespace PerfectPath.PriorityQueue
         {
             _comparer = comparer ?? Comparer<T>.Default;
         }
+
+        public int Count { get; private set; }
 
         public T Peek()
         {
@@ -75,13 +76,13 @@ namespace PerfectPath.PriorityQueue
             if (result.Child != null)
             {
                 if (minSibling == result)
-                {
                     // if min was the only root node, it's children are now the root
+                {
                     minSibling = result.Child;
                 }
                 else
-                {
                     // join children to soon to be new root
+                {
                     Join(minSibling, result.Child);
                 }
 
@@ -90,17 +91,44 @@ namespace PerfectPath.PriorityQueue
             }
 
             _min = result == minSibling // there are no other nodes
-                        ? null // heap empty 
-                        : Consolidate(minSibling, Count); // clean up the heap
+                ? null // heap empty 
+                : Consolidate(minSibling, Count); // clean up the heap
 
-#if (DEBUG)
+            #if (DEBUG)
             //System.Console.WriteLine(NodeDebugTools<T>.Stringify(_min));
-#endif
+            #endif
             Count--;
 
             NodeTrackingStrategy.Remove(result.Value);
 
             return result.Value;
+        }
+
+        public void DecreaseKey(T oldValue, T newValue)
+        {
+            var node = NodeTrackingStrategy.Get(oldValue);
+            DecreaseKey(node, newValue);
+        }
+
+        internal void DecreaseKey(Node<T> node, T newValue)
+        {
+            node.Value = newValue;
+
+            if (node.Parent != null)
+            {
+                if (_comparer.Compare(node.Value, node.Parent.Value) < 0)
+                {
+                    var parent = node.Parent;
+                    Cut(node);
+                    Join(_min, node);
+                    if (_comparer.Compare(node.Value, _min.Value) < 0)
+                    {
+                        _min = node;
+                    }
+
+                    parent.Marked = true;
+                }
+            }
         }
 
         internal void AddChild(Node<T> parent, Node<T> child)
@@ -122,7 +150,7 @@ namespace PerfectPath.PriorityQueue
         }
 
         /// <summary>
-        /// Joins 2 nodes. Those nodes can have siblings / links to adjacent
+        ///     Joins 2 nodes. Those nodes can have siblings / links to adjacent
         /// </summary>
         internal void Join(Node<T> first, Node<T> second)
         {
@@ -135,8 +163,8 @@ namespace PerfectPath.PriorityQueue
         }
 
         /// <summary>
-        /// Sever the adjacent and reassign child to parent's child if this was the connection
-        /// to the parent.
+        ///     Sever the adjacent and reassign child to parent's child if this was the connection
+        ///     to the parent.
         /// </summary>
         internal Node<T> Cut(Node<T> node)
         {
@@ -149,7 +177,7 @@ namespace PerfectPath.PriorityQueue
             // update parent's child if the parents child is the node about to be removed
             if (node.Parent?.Child == node)
             {
-                node.Parent.Child = node.Next == node 
+                node.Parent.Child = node.Next == node
                     ? null // no adjacent / siblings to replace with
                     : node.Next; // parent's child becomes node on right
             }
@@ -165,7 +193,7 @@ namespace PerfectPath.PriorityQueue
 
         internal Node<T> Consolidate(Node<T> root, int nodeCount)
         {
-            var arraySize = ((int)Math.Floor(Math.Log(nodeCount) * OneOverLogPhi)) + 1; // magic to ensure array won't be too small (index will be tree degree)
+            var arraySize = (int) Math.Floor(Math.Log(nodeCount) * OneOverLogPhi) + 1; // magic to ensure array won't be too small (index will be tree degree)
             var array = new Node<T>[arraySize];
 
             var next = root.Next;
@@ -202,7 +230,6 @@ namespace PerfectPath.PriorityQueue
                 {
                     Cut(current);
                 }
-
             }
 
             // join together merged trees into 1 linked list again
@@ -226,6 +253,7 @@ namespace PerfectPath.PriorityQueue
                     {
                         newMin = node;
                     }
+
                     Join(newRoot, node);
                 }
             }
