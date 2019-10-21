@@ -37,27 +37,7 @@ namespace PerfectPath.PriorityQueue
             var node = new Node<T>(item);
             node.Prev = node.Next = node; // join node to self
 
-            // first node in queue
-            if (_min == null)
-            {
-                _min = node;
-            }
-            else
-            {
-                // join node to current min
-                Join(_min, node);
-
-                // set min to point to new node if smaller
-                if (_comparer.Compare(item, _min.Value) < 0)
-                {
-                    _min = node;
-                }
-            }
-
-            Count++;
-
-            //to get a reference to the node to decrease key
-            NodeTrackingStrategy.Add(node);
+            Push(node);
         }
 
         public T PopMin()
@@ -104,6 +84,31 @@ namespace PerfectPath.PriorityQueue
             return result.Value;
         }
 
+        internal void Push(Node<T> node)
+        {
+            // first node in queue
+            if (_min == null)
+            {
+                _min = node;
+            }
+            else
+            {
+                // join node to current min
+                Join(_min, node);
+
+                // set min to point to new node if smaller
+                if (_comparer.Compare(node.Value, _min.Value) < 0)
+                {
+                    _min = node;
+                }
+            }
+
+            Count++;
+
+            //to get a reference to the node to decrease key
+            NodeTrackingStrategy.Add(node);
+        }
+
         public void DecreaseKey(T oldValue, T newValue)
         {
             var node = NodeTrackingStrategy.Get(oldValue);
@@ -126,6 +131,7 @@ namespace PerfectPath.PriorityQueue
                         _min = node;
                     }
 
+                    DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(parent);
                     parent.Marked = true;
                 }
             }
