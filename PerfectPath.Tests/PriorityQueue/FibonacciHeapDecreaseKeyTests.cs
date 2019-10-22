@@ -1,4 +1,5 @@
 #define DEBUG
+using System.Linq;
 using NUnit.Framework;
 using PerfectPath.PriorityQueue;
 
@@ -64,12 +65,51 @@ namespace PerfectPath.Tests.PriorityQueue
         }
 
         [Test]
-        public void DecreaseKey_CorrectDegreeOnPromotion_Success()
+        public void DecreaseKey_CorrectParentDegreesOnPromotion_Success()
         {
             _fibonacciHeap.DecreaseKey(_n5, 1);
 
             Assert.AreEqual(1, _n4.Degree);
             Assert.AreEqual(2, _n2.Degree);
+        }
+
+        [Test]
+        public void DecreaseKey_CorrectNodeDegreeOnPromotion_Success()
+        {
+            _fibonacciHeap.DecreaseKey(_n5, 1);
+
+            Assert.AreEqual(0, _n5.Degree);
+        }
+
+        [Test]
+        public void DecreaseKey_MarkedParentPromotedWhenLosingChild_Success()
+        {
+            _n4.Marked = true;
+
+            _fibonacciHeap.DecreaseKey(_n5, 1);
+
+            CollectionAssert.Contains(NodeDebugTools<int>.IterateSiblings(_n2).ToList(), _n4);
+            CollectionAssert.Contains(NodeDebugTools<int>.IterateSiblings(_n2).ToList(), _n5);
+        }
+
+        [Test]
+        public void DecreaseKey_MarkedParentPromotedIsNoLongerMarked_Success()
+        {
+            _n4.Marked = true;
+
+            _fibonacciHeap.DecreaseKey(_n5, 1);
+
+            Assert.IsFalse(_n4.Marked);
+        }
+
+        [Test]
+        public void DecreaseKey_MarkedParentPromotedMarksItsParent_Success()
+        {
+            _n4.Marked = true;
+
+            _fibonacciHeap.DecreaseKey(_n5, 1);
+
+            Assert.IsTrue(_n2.Marked);
         }
     }
 }

@@ -121,18 +121,54 @@ namespace PerfectPath.PriorityQueue
 
             if (node.Parent != null)
             {
+                // if no longer heap (node value is smaller than parents node value)
                 if (_comparer.Compare(node.Value, node.Parent.Value) < 0)
                 {
+                    // promote to root
                     var parent = node.Parent;
                     Cut(node);
                     Join(_min, node);
+                    node.Marked = false;
+
+                    // check to see if this is the new min now that the key has been decreased
                     if (_comparer.Compare(node.Value, _min.Value) < 0)
                     {
                         _min = node;
                     }
 
                     DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(parent);
-                    parent.Marked = true;
+
+                    // if this is the first child the parent has lost, mark it, else go up the tree promoting marked
+                    // parents to the root
+                    if (!parent.Marked)
+                    {
+                        parent.Marked = true;
+                    }
+                    else
+                    {
+                        // ToDo: this could be better, perhaps consolidate some code with the promotion above?
+                        var current = parent;
+                        var next = current.Parent;
+                        while (current != null)
+                        {
+                            if (!current.Marked)
+                            {
+                                current.Marked = true;
+                                break;
+                            }
+
+                            Cut(current);
+                            Join(_min, current);
+                            current.Marked = false;
+                            if (next != null)
+                            {
+                                DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(next);
+                            }
+
+                            current = next;
+                            next = current?.Parent;
+                        }
+                    }
                 }
             }
         }
