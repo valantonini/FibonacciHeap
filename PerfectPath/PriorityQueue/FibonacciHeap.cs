@@ -136,7 +136,7 @@ namespace PerfectPath.PriorityQueue
                         _min = node;
                     }
 
-                    DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(parent);
+                    // DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(parent);
 
                     // if this is the first child the parent has lost, mark it, else go up the tree promoting marked
                     // parents to the root
@@ -162,7 +162,7 @@ namespace PerfectPath.PriorityQueue
                             current.Marked = false;
                             if (next != null)
                             {
-                                DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(next);
+                                // DegreeUpdatingStrategy.UpdateParentsDegreeFromChildCut(next);
                             }
 
                             current = next;

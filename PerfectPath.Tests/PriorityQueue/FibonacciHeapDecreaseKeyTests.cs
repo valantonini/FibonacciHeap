@@ -1,7 +1,7 @@
-#define DEBUG
 using System.Linq;
 using NUnit.Framework;
 using PerfectPath.PriorityQueue;
+using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 
 namespace PerfectPath.Tests.PriorityQueue
 {
@@ -25,7 +25,11 @@ namespace PerfectPath.Tests.PriorityQueue
             _n5 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(5);
             _n6 = FibonacciHeapTestHelpers.CreateNodeConnectedToSelf(6);
 
-            _fibonacciHeap = new FibonacciHeap<int>();
+            _fibonacciHeap = new FibonacciHeap<int>
+            {
+                DegreeUpdatingStrategy = new AccurateDegreeUpdater<int>()
+            };
+
             _fibonacciHeap.Push(_n1);
             _fibonacciHeap.Push(_n2);
             _fibonacciHeap.Push(_n3);
@@ -69,8 +73,8 @@ namespace PerfectPath.Tests.PriorityQueue
         {
             _fibonacciHeap.DecreaseKey(_n5, 1);
 
-            Assert.AreEqual(1, _n4.Degree);
-            Assert.AreEqual(2, _n2.Degree);
+            Assert.AreEqual(0, _n4.Degree, $"{nameof(_n4)} degree");
+            Assert.AreEqual(1, _n2.Degree, $"{nameof(_n2)} degree");
         }
 
         [Test]

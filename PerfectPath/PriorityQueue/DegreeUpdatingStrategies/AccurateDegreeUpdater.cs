@@ -16,12 +16,10 @@ namespace PerfectPath.PriorityQueue.DegreeUpdatingStrategies
                 {
                     break; // bigger sibling already exists 
                 }
-                else
-                {
-                    p.Degree = c.Degree + 1;
-                    p = p.Parent;
-                    c = p;
-                }
+
+                p.Degree = c.Degree + 1;
+                p = p.Parent;
+                c = p;
             }
         }
 
@@ -30,9 +28,9 @@ namespace PerfectPath.PriorityQueue.DegreeUpdatingStrategies
         {
             var parent = node.Parent;
             var child = node;
-            while (parent != null)
+            if (parent != null)
             {
-                // go up the chain updating parent's degrees
+                // if it is possible the cut node was the node that gave the parent node it's degree
                 if (parent.Degree == child.Degree + 1)
                 {
                     var biggestDegree = 0;
@@ -46,14 +44,42 @@ namespace PerfectPath.PriorityQueue.DegreeUpdatingStrategies
                         {
                             continue; // skip current node as it is the biggest and will be removed
                         }
-                        else
-                        {
-                            biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
-                        }
+
+                        biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
 
                         next = next.Next;
-                    }
-                    while (next != start);
+                    } while (next != start);
+
+                    // update parent's degree
+                    parent.Degree = biggestDegree;
+                }
+
+                child = parent;
+                parent = parent.Parent;
+            }
+
+            // go up the chain updating parent's degrees
+            while (parent != null)
+            {
+                if (parent.Degree > child.Degree + 1)
+                {
+                    var biggestDegree = child.Degree + 1;
+
+                    // iterate through adjacent nodes to find the biggest to recalc parent degree
+                    var start = child;
+                    var next = child.Next;
+                    do
+                    {
+                        if (next == node)
+                        {
+                            continue; // skip current node as it is the biggest and will be removed
+                        }
+
+                        biggestDegree = next.Degree + 1 > biggestDegree ? next.Degree + 1 : biggestDegree;
+
+                        next = next.Next;
+                    } while (next != start);
+
                     // update parent's degree
                     parent.Degree = biggestDegree;
                 }
