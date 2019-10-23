@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using System.Diagnostics;
 using PerfectPath.PriorityQueue;
+using PerfectPath.PriorityQueue.DegreeUpdatingStrategies;
 
 namespace PerfectPath.Tests.PriorityQueue
 {
@@ -22,58 +24,42 @@ namespace PerfectPath.Tests.PriorityQueue
                             .Distinct()
                             .ToList();
 
-
-            var baselineTimer = Stopwatch.StartNew();
-            var queueB = new BaselinePriorityQueue<int>();
-            for (var i = 0; i < numbers.Count; i++)
+            const int iterations = 3;
+            var results = new List<long>();
+            for (var iteration = 0; iteration <= iterations; iteration++)
             {
-                queueB.Push(numbers[i]);
-                if (i % mod == 0)
+                var heapTimer = Stopwatch.StartNew();
+                var heap = new FibonacciHeap<int>
                 {
-                    queueB.PopMin();
-                }
-            }
-            baselineTimer.Stop();
-            var queueElapsed = baselineTimer.ElapsedMilliseconds;
+                    DegreeUpdatingStrategy = new AccurateDegreeUpdater<int>()
+                };
 
-            var heapTimer = Stopwatch.StartNew();
-            var heap = new FibonacciHeap<int>();
-            for (var i = 0; i < numbers.Count; i++)
-            {
-                heap.Push(numbers[i]);
-                if (i % mod == 0)
+                for (var i = 0; i < numbers.Count; i++)
                 {
-                    heap.PopMin();
+                    heap.Push(numbers[i]);
+                    if (i % mod == 0)
+                    {
+                        heap.PopMin();
+                    }
                 }
+
+                heapTimer.Stop();
+
+                if (iteration == 0)
+                {
+                    // warm up
+                    continue;
+                }
+
+                results.Add(heapTimer.ElapsedMilliseconds);
             }
-            heapTimer.Stop();
-            var heapElapsed = heapTimer.ElapsedMilliseconds;
-            stringBuilder.AppendLine($"Heap: {numbers.Count} processed in {heapElapsed}ms");
+            
+            var heapElapsedAverage = results.Sum() / iterations;
 
-            // timer = Stopwatch.StartNew();
-            // var list = new List<int>();
-            // for (var i = 0; i < numbers.Count; i++)
-            // {
-            //     list.Add(numbers[i]);  
-            //     if (i % mod == 0) {
-            //         list.Remove(list.Min());
-            //     }  
-            // }
-            // timer.Stop();
-            // stringBuilder.AppendLine($"List: {numbers.Count} processed in {timer.ElapsedMilliseconds}ms");
-
-
-            var variance = (heapElapsed / (double)queueElapsed) * 100;
-
-            stringBuilder.AppendLine($"Queue: {numbers.Count} processed in {queueElapsed}ms");
-
-            stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"variance {heapElapsed - queueElapsed}ms ({Math.Round(variance, 2)}%)");
-            stringBuilder.AppendLine();
+            stringBuilder.AppendLine($"Heap: {numbers.Count} processed in {heapElapsedAverage}ms averaged over {iterations} runs");
 
             Console.WriteLine(stringBuilder.ToString());
-
-            // Assert.Less(heapElapsed, queueElapsed);
+            Assert.Inconclusive(stringBuilder.ToString());
         }
     }
 }
