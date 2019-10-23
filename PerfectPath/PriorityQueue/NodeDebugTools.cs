@@ -49,7 +49,6 @@ namespace PerfectPath.PriorityQueue
                 p = parent.Parent;
             }
             while (p != null);
-            yield break;
         }
 
         // https://rosettacode.org/wiki/Fibonacci_heap#Kotlin
