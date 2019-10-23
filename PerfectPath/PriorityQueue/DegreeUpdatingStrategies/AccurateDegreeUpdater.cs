@@ -53,6 +53,10 @@ namespace PerfectPath.PriorityQueue.DegreeUpdatingStrategies
                     // update parent's degree
                     parent.Degree = biggestDegree;
                 }
+                else
+                {
+                    return; // parents degree was based upon a different child's hierarchy. No need to update up the tree
+                }
 
                 child = parent;
                 parent = parent.Parent;

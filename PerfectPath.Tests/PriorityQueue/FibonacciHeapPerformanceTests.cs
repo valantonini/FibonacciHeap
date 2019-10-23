@@ -24,7 +24,7 @@ namespace PerfectPath.Tests.PriorityQueue
                             .Distinct()
                             .ToList();
 
-            const int iterations = 3;
+            const int iterations = 10;
             var results = new List<long>();
             for (var iteration = 0; iteration <= iterations; iteration++)
             {
