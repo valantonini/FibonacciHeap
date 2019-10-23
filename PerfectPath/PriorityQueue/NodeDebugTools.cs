@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace PerfectPath.PriorityQueue
 {
-    public class NodeDebugTools<T>
+    public static class NodeDebugTools<T>
     {
         public static string Stringify(Node<T> node)
         {
-            var stringbuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            stringbuilder.AppendLine(); // nunit starts indented in VSCode console
+            stringBuilder.AppendLine(); // nunit starts indented in VSCode console
 
             if (node == null)
             {
-                stringbuilder.AppendLine("[ empty ]");
-                return stringbuilder.ToString();
+                stringBuilder.AppendLine("[ empty ]");
+                return stringBuilder.ToString();
             }
-            Visualize(node, string.Empty, stringbuilder);
+            Visualize(node, string.Empty, stringBuilder);
 
-            stringbuilder.AppendLine();
-            stringbuilder.AppendLine();
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine();
 
-            return stringbuilder.ToString();
+            return stringBuilder.ToString();
         }
 
         public static IEnumerable<Node<T>> IterateSiblings(Node<T> node)
@@ -34,8 +34,6 @@ namespace PerfectPath.PriorityQueue
                 next = next.Next;
             }
             while (next != start);
-
-            yield break;
         }
 
         public static IEnumerable<(Node<T> parent, Node<T> child)> IterateUpParents(Node<T> parent, Node<T> child = null)
